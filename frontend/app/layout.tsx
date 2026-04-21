@@ -13,21 +13,16 @@ import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
 import * as demo from '@/sanity/lib/demo'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
-import {settingsQuery} from '@/sanity/lib/queries'
+import {settingsQuery, siteThemeQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 import {handleError} from '@/app/client-utils'
 
-/**
- * Generate metadata for the page.
- * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
- */
 export async function generateMetadata(): Promise<Metadata> {
   const {data: settings} = await sanityFetch({
     query: settingsQuery,
-    // Metadata should never contain stega
     stega: false,
   })
-  const title = settings?.title || demo.title
+  const title = settings?.foundationName || settings?.title || demo.title
   const description = settings?.description || demo.description
 
   const ogImage = resolveOpenGraphImage(settings?.ogImage)
@@ -65,26 +60,52 @@ const ibmPlexMono = IBM_Plex_Mono({
   display: 'swap',
 })
 
+// Map font names to Google Fonts URL parameter values
+const fontUrlMap: Record<string, string> = {
+  'Playfair Display': 'Playfair+Display:wght@400;700;900',
+  Oswald: 'Oswald:wght@400;700',
+  'Bebas Neue': 'Bebas+Neue',
+  Montserrat: 'Montserrat:wght@400;700;900',
+  'Libre Baskerville': 'Libre+Baskerville:wght@400;700',
+}
+
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
+  const {data: theme} = await sanityFetch({query: siteThemeQuery, stega: false})
+
+  const headingFont = theme?.headingFont || 'Montserrat'
+  const fontUrl = fontUrlMap[headingFont]
 
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexMono.variable} bg-white text-black`}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${ibmPlexMono.variable} bg-white text-black`}
+      style={{'--font-heading': `"${headingFont}", sans-serif`} as React.CSSProperties}
+    >
+      <head>
+        {fontUrl && (
+          <>
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            <link
+              href={`https://fonts.googleapis.com/css2?family=${fontUrl}&display=swap`}
+              rel="stylesheet"
+            />
+          </>
+        )}
+      </head>
       <body>
         <section className="min-h-screen pt-24">
-          {/* The <Toaster> component is responsible for rendering toast notifications used in /app/client-utils.ts and /app/components/DraftModeToast.tsx */}
           <Toaster />
           {isDraftMode && (
             <>
               <DraftModeToast />
-              {/*  Enable Visual Editing, only to be rendered when Draft Mode is enabled */}
               <VisualEditing />
             </>
           )}
-          {/* The <SanityLive> component is responsible for making all sanityFetch calls in your application live, so should always be rendered. */}
           <SanityLive onError={handleError} />
           <Header />
-          <main className="">{children}</main>
+          <main>{children}</main>
           <Footer />
         </section>
         <SpeedInsights />

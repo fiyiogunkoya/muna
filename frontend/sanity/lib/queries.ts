@@ -1,6 +1,18 @@
 import {defineQuery} from 'next-sanity'
 
-export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
+export const settingsQuery = defineQuery(`*[_type == "settings"][0]{
+  ...,
+  foundationName,
+  tagline,
+  contactEmail,
+  socialLinks[] {
+    _key,
+    platform,
+    url
+  },
+  donateUrl,
+  donateButtonText
+}`)
 
 const postFields = /* groq */ `
   _id,
@@ -98,4 +110,46 @@ export const postPagesSlugs = defineQuery(`
 export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
+`)
+
+export const galleryListingQuery = defineQuery(`
+  *[_type == "gallery" && defined(slug.current)] | order(date desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    coverImage,
+    date,
+    "imageCount": count(images)
+  }
+`)
+
+export const galleryBySlugQuery = defineQuery(`
+  *[_type == "gallery" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    date,
+    images[] {
+      _key,
+      image {
+        ...,
+        asset->
+      },
+      caption,
+      "alt": image.alt
+    }
+  }
+`)
+
+export const gallerySlugsQuery = defineQuery(`
+  *[_type == "gallery" && defined(slug.current)]
+  {"slug": slug.current}
+`)
+
+export const siteThemeQuery = defineQuery(`
+  *[_type == "siteTheme" && _id == "siteTheme"][0] {
+    headingFont
+  }
 `)

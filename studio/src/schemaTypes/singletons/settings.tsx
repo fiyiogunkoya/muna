@@ -14,6 +14,10 @@ export const settings = defineType({
   title: 'Settings',
   type: 'document',
   icon: CogIcon,
+  groups: [
+    {name: 'general', title: 'General', default: true},
+    {name: 'foundation', title: 'Foundation'},
+  ],
   fields: [
     defineField({
       name: 'title',
@@ -22,6 +26,7 @@ export const settings = defineType({
       type: 'string',
       initialValue: demo.title,
       validation: (rule) => rule.required(),
+      group: 'general',
     }),
     defineField({
       name: 'description',
@@ -29,6 +34,7 @@ export const settings = defineType({
       title: 'Description',
       type: 'array',
       initialValue: demo.description,
+      group: 'general',
       of: [
         // Define a minified block content field for the description. https://www.sanity.io/docs/block-content
         defineArrayMember({
@@ -119,6 +125,7 @@ export const settings = defineType({
       name: 'ogImage',
       title: 'Open Graph Image',
       type: 'image',
+      group: 'general',
       description: 'Displayed on social cards and search engine results.',
       options: {
         hotspot: true,
@@ -155,6 +162,84 @@ export const settings = defineType({
           ),
         }),
       ],
+    }),
+    defineField({
+      name: 'foundationName',
+      title: 'Foundation Name',
+      type: 'string',
+      description: 'Displayed in the header, hero, and footer',
+      group: 'foundation',
+    }),
+    defineField({
+      name: 'tagline',
+      title: 'Tagline',
+      type: 'string',
+      description: 'Mission one-liner shown in the hero section',
+      group: 'foundation',
+    }),
+    defineField({
+      name: 'contactEmail',
+      title: 'Contact Email',
+      type: 'string',
+      description: 'Displayed on the contact page',
+      group: 'foundation',
+    }),
+    defineField({
+      name: 'socialLinks',
+      title: 'Social Links',
+      type: 'array',
+      description: 'Links to social media profiles',
+      group: 'foundation',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          name: 'socialLink',
+          fields: [
+            defineField({
+              name: 'platform',
+              title: 'Platform',
+              type: 'string',
+              options: {
+                list: [
+                  {title: 'Instagram', value: 'instagram'},
+                  {title: 'Twitter / X', value: 'twitter'},
+                  {title: 'Facebook', value: 'facebook'},
+                  {title: 'LinkedIn', value: 'linkedin'},
+                  {title: 'YouTube', value: 'youtube'},
+                ],
+              },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: 'url',
+              title: 'URL',
+              type: 'url',
+              validation: (rule) => rule.required(),
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'platform',
+              subtitle: 'url',
+            },
+          },
+        }),
+      ],
+    }),
+    defineField({
+      name: 'donateUrl',
+      title: 'Donate URL',
+      type: 'url',
+      description: 'Link to your external donation platform (GoFundMe, PayPal, etc.)',
+      group: 'foundation',
+    }),
+    defineField({
+      name: 'donateButtonText',
+      title: 'Donate Button Text',
+      type: 'string',
+      description: 'Text for the donate button',
+      initialValue: 'Donate',
+      group: 'foundation',
     }),
   ],
   preview: {

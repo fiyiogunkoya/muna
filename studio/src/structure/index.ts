@@ -1,4 +1,4 @@
-import {CogIcon, PaintBucketIcon, ImageIcon} from '@sanity/icons'
+import {CogIcon, ColorWheelIcon, ImageIcon} from '@sanity/icons'
 import type {StructureBuilder, StructureResolver} from 'sanity/structure'
 
 const SINGLETON_TYPES = ['settings', 'siteTheme', 'assist.instruction.context']
@@ -35,5 +35,5 @@ export const structure: StructureResolver = (S: StructureBuilder) =>
       S.listItem()
         .title('Site Theme')
         .child(S.document().schemaType('siteTheme').documentId('siteTheme'))
-        .icon(PaintBucketIcon),
+        .icon(ColorWheelIcon),
     ])

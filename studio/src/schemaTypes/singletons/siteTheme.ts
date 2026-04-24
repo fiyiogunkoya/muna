@@ -1,11 +1,11 @@
-import {PaintBucketIcon} from '@sanity/icons'
+import {ColorWheelIcon} from '@sanity/icons'
 import {defineField, defineType} from 'sanity'
 
 export const siteTheme = defineType({
   name: 'siteTheme',
   title: 'Site Theme',
   type: 'document',
-  icon: PaintBucketIcon,
+  icon: ColorWheelIcon,
   fields: [
     defineField({
       name: 'headingFont',

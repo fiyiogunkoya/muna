@@ -1,0 +1,4 @@
+# Netlify config for the Next.js frontend (munafoundation.com)
+[build]
+command = "npm run build"
+publish = ".next"

@@ -1,5 +1,7 @@
 import type {Metadata} from 'next'
 import Head from 'next/head'
+import {draftMode} from 'next/headers'
+import {notFound} from 'next/navigation'
 
 import PageBuilderPage from '@/app/components/PageBuilder'
 import {sanityFetch} from '@/sanity/lib/live'
@@ -49,11 +51,15 @@ export default async function Page(props: Props) {
   const [{data: page}] = await Promise.all([sanityFetch({query: getPageQuery, params})])
 
   if (!page?._id) {
-    return (
-      <div className="py-40">
-        <PageOnboarding />
-      </div>
-    )
+    const {isEnabled} = await draftMode()
+    if (isEnabled) {
+      return (
+        <div className="py-40">
+          <PageOnboarding />
+        </div>
+      )
+    }
+    notFound()
   }
 
   return (

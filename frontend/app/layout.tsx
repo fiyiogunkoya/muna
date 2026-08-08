@@ -71,6 +71,11 @@ const fontUrlMap: Record<string, string> = {
   'Libre Baskerville': 'Libre+Baskerville:wght@400;700',
 }
 
+// Render all pages per-request so published Sanity content is always current.
+// Netlify's durable cache does not honor next-sanity's tag-based revalidation,
+// which otherwise pins prerendered pages to build-time content.
+export const dynamic = 'force-dynamic'
+
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
   const [{data: theme}, {data: settings}] = await Promise.all([

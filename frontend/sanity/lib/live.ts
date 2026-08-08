@@ -9,6 +9,10 @@ import {token} from '@/sanity/lib/token'
 
 export const {sanityFetch, SanityLive} = defineLive({
   client,
+  // Fetch fresh content on every request. The default (revalidate: false)
+  // caches responses until tag revalidation, which Netlify's durable cache
+  // does not honor — published edits would never reach the live site.
+  fetchOptions: {revalidate: 0},
   // Required for showing draft content when the Sanity Presentation Tool is used, or to enable the Vercel Toolbar Edit Mode
   serverToken: token,
   // Required for stand-alone live previews, the token is only shared to the browser if it's a valid Next.js Draft Mode session

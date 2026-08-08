@@ -16,6 +16,7 @@ import {
   type DocumentLocation,
 } from 'sanity/presentation'
 import {assist} from '@sanity/assist'
+import {colorInput} from '@sanity/color-input'
 
 // Environment variables for project configuration
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
@@ -40,6 +41,10 @@ function resolveHref(documentType?: string, slug?: string): string | undefined {
       return slug ? `/${slug}` : undefined
     case 'gallery':
       return slug ? `/gallery/${slug}` : undefined
+    case 'program':
+      return slug ? `/programs/${slug}` : undefined
+    case 'story':
+      return slug ? `/stories/${slug}` : undefined
     default:
       console.warn('Invalid document type:', documentType)
       return undefined
@@ -68,7 +73,7 @@ export default defineConfig({
         mainDocuments: defineDocuments([
           {
             route: '/',
-            filter: `_type == "settings" && _id == "siteSettings"`,
+            filter: `_type == "settings"`,
           },
           {
             route: '/:slug',
@@ -81,6 +86,34 @@ export default defineConfig({
           {
             route: '/gallery/:slug',
             filter: `_type == "gallery" && slug.current == $slug || _id == $slug`,
+          },
+          {
+            route: '/programs/:slug',
+            filter: `_type == "program" && slug.current == $slug || _id == $slug`,
+          },
+          {
+            route: '/stories/:slug',
+            filter: `_type == "story" && slug.current == $slug || _id == $slug`,
+          },
+          {
+            route: '/programs',
+            filter: `_type == "settings"`,
+          },
+          {
+            route: '/stories',
+            filter: `_type == "settings"`,
+          },
+          {
+            route: '/impact',
+            filter: `_type == "settings"`,
+          },
+          {
+            route: '/about',
+            filter: `_type == "settings"`,
+          },
+          {
+            route: '/get-involved',
+            filter: `_type == "settings"`,
           },
         ]),
         // Locations Resolver API allows you to define where data is being used in your application. https://www.sanity.io/docs/visual-editing/presentation-resolver-api#8d8bca7bfcd7
@@ -136,6 +169,38 @@ export default defineConfig({
               ],
             }),
           }),
+          program: defineLocations({
+            select: {
+              title: 'title',
+              slug: 'slug.current',
+            },
+            resolve: (doc) => ({
+              locations: [
+                {
+                  title: doc?.title || 'Untitled',
+                  href: resolveHref('program', doc?.slug)!,
+                },
+                {title: 'Programs', href: '/programs'} satisfies DocumentLocation,
+                homeLocation,
+              ].filter(Boolean) as DocumentLocation[],
+            }),
+          }),
+          story: defineLocations({
+            select: {
+              title: 'title',
+              slug: 'slug.current',
+            },
+            resolve: (doc) => ({
+              locations: [
+                {
+                  title: doc?.title || 'Untitled',
+                  href: resolveHref('story', doc?.slug)!,
+                },
+                {title: 'Stories', href: '/stories'} satisfies DocumentLocation,
+                homeLocation,
+              ].filter(Boolean) as DocumentLocation[],
+            }),
+          }),
         },
       },
     }),
@@ -146,6 +211,7 @@ export default defineConfig({
     unsplashImageAsset(),
     assist(),
     visionTool(),
+    colorInput(),
   ],
 
   // Schema configuration, imported from ./src/schemaTypes/index.ts

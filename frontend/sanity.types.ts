@@ -15,6 +15,125 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: ../sanity.schema.json
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
+export type DonateBanner = {
+  _type: 'donateBanner'
+  heading: string
+  body?: BlockContentTextOnly
+  buttonText?: string
+  useSettingsUrl?: boolean
+  overrideUrl?: string
+  image?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  tone?: 'light' | 'dark' | 'accent'
+}
+
+export type TestimonialReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'testimonial'
+}
+
+export type TestimonialBlock = {
+  _type: 'testimonialBlock'
+  eyebrow?: string
+  heading?: string
+  testimonials?: Array<
+    {
+      _key: string
+    } & TestimonialReference
+  >
+  layout?: 'single' | 'carousel'
+}
+
+export type PartnerReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'partner'
+}
+
+export type PartnerLogos = {
+  _type: 'partnerLogos'
+  eyebrow?: string
+  heading?: string
+  partners?: Array<
+    {
+      _key: string
+    } & PartnerReference
+  >
+  tiersFilter?: Array<string>
+}
+
+export type StoryReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'story'
+}
+
+export type StoryCarousel = {
+  _type: 'storyCarousel'
+  eyebrow?: string
+  heading?: string
+  stories?: Array<
+    {
+      _key: string
+    } & StoryReference
+  >
+  variant?: 'cards' | 'large'
+}
+
+export type ImpactMetricReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'impactMetric'
+}
+
+export type ImpactMetricsRow = {
+  _type: 'impactMetricsRow'
+  eyebrow?: string
+  heading?: string
+  metrics?: Array<
+    {
+      _key: string
+    } & ImpactMetricReference
+  >
+}
+
+export type ProgramReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'program'
+}
+
+export type ProgramGrid = {
+  _type: 'programGrid'
+  eyebrow?: string
+  heading?: string
+  programs?: Array<
+    {
+      _key: string
+    } & ProgramReference
+  >
+  layout?: 'grid' | 'list'
+}
+
 export type PageReference = {
   _ref: string
   _type: 'reference'
@@ -36,13 +155,6 @@ export type Link = {
   page?: PageReference
   post?: PostReference
   openInNewTab?: boolean
-}
-
-export type SanityImageAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
 export type CallToAction = {
@@ -127,6 +239,317 @@ export type Button = {
   link?: Link
 }
 
+export type Campaign = {
+  _id: string
+  _type: 'campaign'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  tagline?: string
+  heroImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  startDate?: string
+  endDate?: string
+  goalAmount?: number
+  currentAmount?: number
+  donateUrl?: string
+  body?: BlockContent
+  featured?: boolean
+  active?: boolean
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
+export type Slug = {
+  _type: 'slug'
+  current: string
+  source?: string
+}
+
+export type Partner = {
+  _id: string
+  _type: 'partner'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name: string
+  logo?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  url?: string
+  tier?: 'founding' | 'strategic' | 'program' | 'media'
+  order?: number
+}
+
+export type Testimonial = {
+  _id: string
+  _type: 'testimonial'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  quote: string
+  attributionName: string
+  attributionRole?: string
+  attributionImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  relatedProgram?: ProgramReference
+  featured?: boolean
+}
+
+export type ImpactMetric = {
+  _id: string
+  _type: 'impactMetric'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  label: string
+  value: string
+  prefix?: string
+  suffix?: string
+  description?: string
+  icon?:
+    | 'Heart'
+    | 'BookOpen'
+    | 'Sprout'
+    | 'Users'
+    | 'Home'
+    | 'Lightbulb'
+    | 'Globe'
+    | 'HandHeart'
+    | 'GraduationCap'
+    | 'Stethoscope'
+    | 'Utensils'
+    | 'Briefcase'
+    | 'Library'
+    | 'Award'
+    | 'ClipboardCheck'
+    | 'Mic'
+    | 'MessageCircle'
+    | 'Sparkles'
+  category?: 'education' | 'health' | 'community' | 'food-security' | 'economic' | 'other'
+  asOfDate?: string
+  source?: string
+}
+
+export type GalleryReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'gallery'
+}
+
+export type Story = {
+  _id: string
+  _type: 'story'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  program?: ProgramReference
+  location?: string
+  date?: string
+  excerpt?: string
+  heroImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  heroQuote?: string
+  challenge?: BlockContentTextOnly
+  approach?: BlockContentTextOnly
+  impact?: BlockContentTextOnly
+  body?: BlockContent
+  pullQuotes?: Array<{
+    quote: string
+    attribution?: string
+    role?: string
+    _type: 'pullQuote'
+    _key: string
+  }>
+  featuredMetrics?: Array<
+    {
+      _key: string
+    } & ImpactMetricReference
+  >
+  gallery?: GalleryReference
+  relatedStories?: Array<
+    {
+      _key: string
+    } & StoryReference
+  >
+  featured?: boolean
+  seo?: {
+    metaTitle?: string
+    metaDescription?: string
+    ogImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  }
+}
+
+export type Program = {
+  _id: string
+  _type: 'program'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  tagline?: string
+  summary?: string
+  icon?:
+    | 'Heart'
+    | 'BookOpen'
+    | 'Sprout'
+    | 'Users'
+    | 'Home'
+    | 'Lightbulb'
+    | 'Globe'
+    | 'HandHeart'
+    | 'GraduationCap'
+    | 'Stethoscope'
+    | 'Utensils'
+    | 'Briefcase'
+    | 'Library'
+    | 'Award'
+    | 'ClipboardCheck'
+    | 'Mic'
+    | 'MessageCircle'
+    | 'Sparkles'
+  accentColor?: 'primary' | 'accent' | 'ink'
+  coverImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  body?: BlockContent
+  impactMetrics?: Array<
+    {
+      _key: string
+    } & ImpactMetricReference
+  >
+  relatedStories?: Array<
+    {
+      _key: string
+    } & StoryReference
+  >
+  relatedGallery?: GalleryReference
+  order?: number
+  featured?: boolean
+  seo?: {
+    metaTitle?: string
+    metaDescription?: string
+    ogImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  }
+}
+
+export type Gallery = {
+  _id: string
+  _type: 'gallery'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  description?: string
+  coverImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  images?: Array<{
+    image: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+    caption?: string
+    _type: 'galleryImage'
+    _key: string
+  }>
+  date?: string
+}
+
+export type SiteTheme = {
+  _id: string
+  _type: 'siteTheme'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  headingFont?: 'Playfair Display' | 'Oswald' | 'Bebas Neue' | 'Montserrat' | 'Libre Baskerville'
+  colorPrimary?: Color
+  colorAccent?: Color
+  colorInk?: Color
+  colorSurface?: Color
+}
+
+export type Color = {
+  _type: 'color'
+  hex?: string
+  alpha?: number
+  hsl?: HslaColor
+  hsv?: HsvaColor
+  rgb?: RgbaColor
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
@@ -165,22 +588,35 @@ export type Settings = {
     metadataBase?: string
     _type: 'image'
   }
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x: number
-  y: number
-  height: number
-  width: number
+  foundationName?: string
+  tagline?: string
+  contactEmail?: string
+  socialLinks?: Array<{
+    platform: 'instagram' | 'twitter' | 'facebook' | 'linkedin' | 'youtube'
+    url: string
+    _type: 'socialLink'
+    _key: string
+  }>
+  donateUrl?: string
+  donateButtonText?: string
+  missionStatement?: BlockContentTextOnly
+  visionStatement?: BlockContentTextOnly
+  philosophy?: Array<string>
+  differentiators?: Array<string>
+  heroImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  heroQuote?: string
+  stickyDonateEnabled?: boolean
+  stickyDonateMessage?: string
+  newsletterEnabled?: boolean
+  newsletterUrl?: string
+  newsletterCtaText?: string
 }
 
 export type Page = {
@@ -200,6 +636,24 @@ export type Page = {
     | ({
         _key: string
       } & InfoSection)
+    | ({
+        _key: string
+      } & ProgramGrid)
+    | ({
+        _key: string
+      } & ImpactMetricsRow)
+    | ({
+        _key: string
+      } & StoryCarousel)
+    | ({
+        _key: string
+      } & PartnerLogos)
+    | ({
+        _key: string
+      } & TestimonialBlock)
+    | ({
+        _key: string
+      } & DonateBanner)
   >
 }
 
@@ -240,6 +694,8 @@ export type Person = {
   _rev: string
   firstName: string
   lastName: string
+  role?: string
+  bio?: string
   picture: {
     asset?: SanityImageAssetReference
     media?: unknown
@@ -250,10 +706,28 @@ export type Person = {
   }
 }
 
-export type Slug = {
-  _type: 'slug'
-  current: string
-  source?: string
+export type RgbaColor = {
+  _type: 'rgbaColor'
+  r?: number
+  g?: number
+  b?: number
+  a?: number
+}
+
+export type HsvaColor = {
+  _type: 'hsvaColor'
+  h?: number
+  s?: number
+  v?: number
+  a?: number
+}
+
+export type HslaColor = {
+  _type: 'hslaColor'
+  h?: number
+  s?: number
+  l?: number
+  a?: number
 }
 
 export type SanityAssistInstructionTask = {
@@ -491,23 +965,47 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
+  | DonateBanner
+  | TestimonialReference
+  | TestimonialBlock
+  | PartnerReference
+  | PartnerLogos
+  | StoryReference
+  | StoryCarousel
+  | ImpactMetricReference
+  | ImpactMetricsRow
+  | ProgramReference
+  | ProgramGrid
   | PageReference
   | PostReference
   | Link
-  | SanityImageAssetReference
   | CallToAction
   | InfoSection
   | BlockContentTextOnly
   | BlockContent
   | Button
-  | Settings
+  | Campaign
   | SanityImageCrop
   | SanityImageHotspot
+  | Slug
+  | Partner
+  | Testimonial
+  | ImpactMetric
+  | GalleryReference
+  | Story
+  | Program
+  | Gallery
+  | SiteTheme
+  | Color
+  | Settings
   | Page
   | PersonReference
   | Post
   | Person
-  | Slug
+  | RgbaColor
+  | HsvaColor
+  | HslaColor
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations
@@ -532,7 +1030,7 @@ export type AllSanitySchemaTypes =
 
 // Source: sanity/lib/queries.ts
 // Variable: settingsQuery
-// Query: *[_type == "settings"][0]
+// Query: *[_type == "settings"][0]{  ...,  foundationName,  tagline,  contactEmail,  socialLinks[] {    _key,    platform,    url  },  donateUrl,  donateButtonText,  missionStatement,  heroImage{..., asset->, "alt": coalesce(alt, asset->altText, "")},  heroQuote,  stickyDonateEnabled,  stickyDonateMessage,  newsletterEnabled,  newsletterUrl,  newsletterCtaText}
 export type SettingsQueryResult = {
   _id: string
   _type: 'settings'
@@ -571,11 +1069,60 @@ export type SettingsQueryResult = {
     metadataBase?: string
     _type: 'image'
   }
+  foundationName: string | null
+  tagline: string | null
+  contactEmail: string | null
+  socialLinks: Array<{
+    _key: string
+    platform: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'youtube'
+    url: string
+  }> | null
+  donateUrl: string | null
+  donateButtonText: string | null
+  missionStatement: BlockContentTextOnly | null
+  visionStatement?: BlockContentTextOnly
+  philosophy?: Array<string>
+  differentiators?: Array<string>
+  heroImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      _createdAt: string
+      _updatedAt: string
+      _rev: string
+      originalFilename?: string
+      label?: string
+      title?: string
+      description?: string
+      altText?: string
+      sha1hash: string
+      extension: string
+      mimeType: string
+      size: number
+      assetId: string
+      uploadId?: string
+      path: string
+      url: string
+      metadata?: SanityImageMetadata
+      source?: SanityAssetSourceData
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string | ''
+    _type: 'image'
+  } | null
+  heroQuote: string | null
+  stickyDonateEnabled: boolean | null
+  stickyDonateMessage: string | null
+  newsletterEnabled: boolean | null
+  newsletterUrl: string | null
+  newsletterCtaText: string | null
 } | null
 
 // Source: sanity/lib/queries.ts
 // Variable: getPageQuery
-// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {        ...,        button {          ...,            link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      }        }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },    },  }
+// Query: *[_type == 'page' && slug.current == $slug][0]{    _id,    _type,    name,    slug,    heading,    subheading,    "pageBuilder": pageBuilder[]{      ...,      _type == "callToAction" => {        ...,        button {          ...,            link {      ...,        _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }      }        }      },      _type == "infoSection" => {        content[]{          ...,          markDefs[]{            ...,              _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }          }        }      },      _type == "programGrid" => {        ...,        "programs": programs[]->{  _id, _type, "slug": slug.current, title, tagline, summary, accentColor, icon,  "coverImage": coverImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}}      },      _type == "impactMetricsRow" => {        ...,        "metrics": metrics[]->{  _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source}      },      _type == "storyCarousel" => {        ...,        "stories": stories[]->{  _id, _type, "slug": slug.current, title, excerpt, location, date,  "program": program->{_id, title, "slug": slug.current},  "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}}      },      _type == "partnerLogos" => {        ...,        "partners": partners[]->{  _id, _type, name, url, tier, order,  "logo": logo{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}}      },      _type == "testimonialBlock" => {        ...,        "testimonials": testimonials[]->{  _id, _type, quote, attributionName, attributionRole,  "attributionImage": attributionImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}}      },      _type == "donateBanner" => {        ...,        "image": image{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")},        "resolvedDonateUrl": select(          useSettingsUrl == true => *[_type == "settings"][0].donateUrl,          overrideUrl        )      },    },  }
 export type GetPageQueryResult = {
   _id: string
   _type: 'page'
@@ -611,6 +1158,91 @@ export type GetPageQueryResult = {
         }
         theme?: 'dark' | 'light'
         contentAlignment?: 'imageFirst' | 'textFirst'
+      }
+    | {
+        _key: string
+        _type: 'donateBanner'
+        heading: string
+        body?: BlockContentTextOnly
+        buttonText?: string
+        useSettingsUrl?: boolean
+        overrideUrl?: string
+        image: {
+          asset: {
+            _id: string
+            _type: 'sanity.imageAsset'
+            _createdAt: string
+            _updatedAt: string
+            _rev: string
+            originalFilename?: string
+            label?: string
+            title?: string
+            description?: string
+            altText?: string
+            sha1hash: string
+            extension: string
+            mimeType: string
+            size: number
+            assetId: string
+            uploadId?: string
+            path: string
+            url: string
+            metadata?: SanityImageMetadata
+            source?: SanityAssetSourceData
+          } | null
+          media?: unknown
+          hotspot?: SanityImageHotspot
+          crop?: SanityImageCrop
+          alt: string | ''
+          _type: 'image'
+        } | null
+        tone?: 'accent' | 'dark' | 'light'
+        resolvedDonateUrl: string | null
+      }
+    | {
+        _key: string
+        _type: 'impactMetricsRow'
+        eyebrow?: string
+        heading?: string
+        metrics: Array<{
+          _id: string
+          _type: 'impactMetric'
+          label: string
+          value: string
+          prefix: string | null
+          suffix: string | null
+          description: string | null
+          icon:
+            | 'Award'
+            | 'BookOpen'
+            | 'Briefcase'
+            | 'ClipboardCheck'
+            | 'Globe'
+            | 'GraduationCap'
+            | 'HandHeart'
+            | 'Heart'
+            | 'Home'
+            | 'Library'
+            | 'Lightbulb'
+            | 'MessageCircle'
+            | 'Mic'
+            | 'Sparkles'
+            | 'Sprout'
+            | 'Stethoscope'
+            | 'Users'
+            | 'Utensils'
+            | null
+          category:
+            | 'community'
+            | 'economic'
+            | 'education'
+            | 'food-security'
+            | 'health'
+            | 'other'
+            | null
+          asOfDate: string | null
+          source: string | null
+        }> | null
       }
     | {
         _key: string
@@ -650,6 +1282,208 @@ export type GetPageQueryResult = {
               markDefs: null
             }
         > | null
+      }
+    | {
+        _key: string
+        _type: 'partnerLogos'
+        eyebrow?: string
+        heading?: string
+        partners: Array<{
+          _id: string
+          _type: 'partner'
+          name: string
+          url: string | null
+          tier: 'founding' | 'media' | 'program' | 'strategic' | null
+          order: number | null
+          logo: {
+            asset: {
+              _id: string
+              _type: 'sanity.imageAsset'
+              _createdAt: string
+              _updatedAt: string
+              _rev: string
+              originalFilename?: string
+              label?: string
+              title?: string
+              description?: string
+              altText?: string
+              sha1hash: string
+              extension: string
+              mimeType: string
+              size: number
+              assetId: string
+              uploadId?: string
+              path: string
+              url: string
+              metadata?: SanityImageMetadata
+              source?: SanityAssetSourceData
+            } | null
+            media?: unknown
+            hotspot?: SanityImageHotspot
+            crop?: SanityImageCrop
+            alt: string | ''
+            _type: 'image'
+          } | null
+        }> | null
+        tiersFilter?: Array<string>
+      }
+    | {
+        _key: string
+        _type: 'programGrid'
+        eyebrow?: string
+        heading?: string
+        programs: Array<{
+          _id: string
+          _type: 'program'
+          slug: string
+          title: string
+          tagline: string | null
+          summary: string | null
+          accentColor: 'accent' | 'ink' | 'primary' | null
+          icon:
+            | 'Award'
+            | 'BookOpen'
+            | 'Briefcase'
+            | 'ClipboardCheck'
+            | 'Globe'
+            | 'GraduationCap'
+            | 'HandHeart'
+            | 'Heart'
+            | 'Home'
+            | 'Library'
+            | 'Lightbulb'
+            | 'MessageCircle'
+            | 'Mic'
+            | 'Sparkles'
+            | 'Sprout'
+            | 'Stethoscope'
+            | 'Users'
+            | 'Utensils'
+            | null
+          coverImage: {
+            asset: {
+              _id: string
+              _type: 'sanity.imageAsset'
+              _createdAt: string
+              _updatedAt: string
+              _rev: string
+              originalFilename?: string
+              label?: string
+              title?: string
+              description?: string
+              altText?: string
+              sha1hash: string
+              extension: string
+              mimeType: string
+              size: number
+              assetId: string
+              uploadId?: string
+              path: string
+              url: string
+              metadata?: SanityImageMetadata
+              source?: SanityAssetSourceData
+            } | null
+            media?: unknown
+            hotspot?: SanityImageHotspot
+            crop?: SanityImageCrop
+            alt: string | ''
+            _type: 'image'
+          }
+        }> | null
+        layout?: 'grid' | 'list'
+      }
+    | {
+        _key: string
+        _type: 'storyCarousel'
+        eyebrow?: string
+        heading?: string
+        stories: Array<{
+          _id: string
+          _type: 'story'
+          slug: string
+          title: string
+          excerpt: string | null
+          location: string | null
+          date: string | null
+          program: {
+            _id: string
+            title: string
+            slug: string
+          } | null
+          heroImage: {
+            asset: {
+              _id: string
+              _type: 'sanity.imageAsset'
+              _createdAt: string
+              _updatedAt: string
+              _rev: string
+              originalFilename?: string
+              label?: string
+              title?: string
+              description?: string
+              altText?: string
+              sha1hash: string
+              extension: string
+              mimeType: string
+              size: number
+              assetId: string
+              uploadId?: string
+              path: string
+              url: string
+              metadata?: SanityImageMetadata
+              source?: SanityAssetSourceData
+            } | null
+            media?: unknown
+            hotspot?: SanityImageHotspot
+            crop?: SanityImageCrop
+            alt: string | ''
+            _type: 'image'
+          }
+        }> | null
+        variant?: 'cards' | 'large'
+      }
+    | {
+        _key: string
+        _type: 'testimonialBlock'
+        eyebrow?: string
+        heading?: string
+        testimonials: Array<{
+          _id: string
+          _type: 'testimonial'
+          quote: string
+          attributionName: string
+          attributionRole: string | null
+          attributionImage: {
+            asset: {
+              _id: string
+              _type: 'sanity.imageAsset'
+              _createdAt: string
+              _updatedAt: string
+              _rev: string
+              originalFilename?: string
+              label?: string
+              title?: string
+              description?: string
+              altText?: string
+              sha1hash: string
+              extension: string
+              mimeType: string
+              size: number
+              assetId: string
+              uploadId?: string
+              path: string
+              url: string
+              metadata?: SanityImageMetadata
+              source?: SanityAssetSourceData
+            } | null
+            media?: unknown
+            hotspot?: SanityImageHotspot
+            crop?: SanityImageCrop
+            alt: string | ''
+            _type: 'image'
+          } | null
+        }> | null
+        layout?: 'carousel' | 'single'
       }
   > | null
 } | null
@@ -813,17 +1647,1303 @@ export type PagesSlugsResult = Array<{
   slug: string
 }>
 
+// Source: sanity/lib/queries.ts
+// Variable: galleryListingQuery
+// Query: *[_type == "gallery" && defined(slug.current)] | order(date desc) {    _id,    title,    "slug": slug.current,    description,    coverImage,    date,    "imageCount": count(images)  }
+export type GalleryListingQueryResult = Array<{
+  _id: string
+  title: string
+  slug: string
+  description: string | null
+  coverImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  date: string | null
+  imageCount: number | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: galleryBySlugQuery
+// Query: *[_type == "gallery" && slug.current == $slug][0] {    _id,    title,    "slug": slug.current,    description,    date,    images[] {      _key,      image {        ...,        asset->      },      caption,      "alt": image.alt    },    "relatedStory": *[_type == "story" && references(^._id)][0] {      _id, title, "slug": slug.current    }  }
+export type GalleryBySlugQueryResult = {
+  _id: string
+  title: string
+  slug: string
+  description: string | null
+  date: string | null
+  images: Array<{
+    _key: string
+    image: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+    caption: string | null
+    alt: string | null
+  }> | null
+  relatedStory: {
+    _id: string
+    title: string
+    slug: string
+  } | null
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: gallerySlugsQuery
+// Query: *[_type == "gallery" && defined(slug.current)]  {"slug": slug.current}
+export type GallerySlugsQueryResult = Array<{
+  slug: string
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: siteThemeQuery
+// Query: *[_type == "siteTheme"][0] {    headingFont,    "colorPrimary": colorPrimary.hex,    "colorAccent": colorAccent.hex,    "colorInk": colorInk.hex,    "colorSurface": colorSurface.hex  }
+export type SiteThemeQueryResult = {
+  headingFont:
+    | 'Bebas Neue'
+    | 'Libre Baskerville'
+    | 'Montserrat'
+    | 'Oswald'
+    | 'Playfair Display'
+    | null
+  colorPrimary: string | null
+  colorAccent: string | null
+  colorInk: string | null
+  colorSurface: string | null
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: homepageQuery
+// Query: {  "settings": *[_type == "settings"][0]{    foundationName, tagline, donateUrl, donateButtonText,    heroQuote, missionStatement,    "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}  },  "featuredPrograms": *[_type == "program" && featured == true]    | order(order asc, _createdAt asc) [0...3] {   _id, _type, "slug": slug.current, title, tagline, summary, accentColor, icon,  "coverImage": coverImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },  "featuredStory": *[_type == "story" && featured == true]    | order(date desc) [0] {   _id, _type, "slug": slug.current, title, excerpt, location, date,  "program": program->{_id, title, "slug": slug.current},  "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },  "moreStories": *[_type == "story" && featured == true]    | order(date desc) [1...4] {   _id, _type, "slug": slug.current, title, excerpt, location, date,  "program": program->{_id, title, "slug": slug.current},  "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },  "metrics": *[_type == "impactMetric"]    | order(_createdAt asc) [0...4] {   _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source },  "featuredTestimonial": *[_type == "testimonial" && featured == true]    | order(_createdAt desc) [0] {   _id, _type, quote, attributionName, attributionRole,  "attributionImage": attributionImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },  "partners": *[_type == "partner"]    | order(order asc, _createdAt asc) {   _id, _type, name, url, tier, order,  "logo": logo{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },  "activeCampaign": *[_type == "campaign" && active == true && featured == true]    | order(startDate desc) [0] {      _id, title, "slug": slug.current, tagline,      "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")},      donateUrl, goalAmount, currentAmount    }}
+export type HomepageQueryResult = {
+  settings: {
+    foundationName: string | null
+    tagline: string | null
+    donateUrl: string | null
+    donateButtonText: string | null
+    heroQuote: string | null
+    missionStatement: BlockContentTextOnly | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+  } | null
+  featuredPrograms: Array<{
+    _id: string
+    _type: 'program'
+    slug: string
+    title: string
+    tagline: string | null
+    summary: string | null
+    accentColor: 'accent' | 'ink' | 'primary' | null
+    icon:
+      | 'Award'
+      | 'BookOpen'
+      | 'Briefcase'
+      | 'ClipboardCheck'
+      | 'Globe'
+      | 'GraduationCap'
+      | 'HandHeart'
+      | 'Heart'
+      | 'Home'
+      | 'Library'
+      | 'Lightbulb'
+      | 'MessageCircle'
+      | 'Mic'
+      | 'Sparkles'
+      | 'Sprout'
+      | 'Stethoscope'
+      | 'Users'
+      | 'Utensils'
+      | null
+    coverImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  }>
+  featuredStory: {
+    _id: string
+    _type: 'story'
+    slug: string
+    title: string
+    excerpt: string | null
+    location: string | null
+    date: string | null
+    program: {
+      _id: string
+      title: string
+      slug: string
+    } | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  } | null
+  moreStories: Array<{
+    _id: string
+    _type: 'story'
+    slug: string
+    title: string
+    excerpt: string | null
+    location: string | null
+    date: string | null
+    program: {
+      _id: string
+      title: string
+      slug: string
+    } | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  }>
+  metrics: Array<{
+    _id: string
+    _type: 'impactMetric'
+    label: string
+    value: string
+    prefix: string | null
+    suffix: string | null
+    description: string | null
+    icon:
+      | 'Award'
+      | 'BookOpen'
+      | 'Briefcase'
+      | 'ClipboardCheck'
+      | 'Globe'
+      | 'GraduationCap'
+      | 'HandHeart'
+      | 'Heart'
+      | 'Home'
+      | 'Library'
+      | 'Lightbulb'
+      | 'MessageCircle'
+      | 'Mic'
+      | 'Sparkles'
+      | 'Sprout'
+      | 'Stethoscope'
+      | 'Users'
+      | 'Utensils'
+      | null
+    category: 'community' | 'economic' | 'education' | 'food-security' | 'health' | 'other' | null
+    asOfDate: string | null
+    source: string | null
+  }>
+  featuredTestimonial: {
+    _id: string
+    _type: 'testimonial'
+    quote: string
+    attributionName: string
+    attributionRole: string | null
+    attributionImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+  } | null
+  partners: Array<{
+    _id: string
+    _type: 'partner'
+    name: string
+    url: string | null
+    tier: 'founding' | 'media' | 'program' | 'strategic' | null
+    order: number | null
+    logo: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+  }>
+  activeCampaign: {
+    _id: string
+    title: string
+    slug: string
+    tagline: string | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+    donateUrl: string | null
+    goalAmount: number | null
+    currentAmount: number | null
+  } | null
+}
+
+// Source: sanity/lib/queries.ts
+// Variable: allProgramsQuery
+// Query: *[_type == "program"] | order(order asc, _createdAt asc) {      _id, _type, "slug": slug.current, title, tagline, summary, accentColor, icon,  "coverImage": coverImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}  }
+export type AllProgramsQueryResult = Array<{
+  _id: string
+  _type: 'program'
+  slug: string
+  title: string
+  tagline: string | null
+  summary: string | null
+  accentColor: 'accent' | 'ink' | 'primary' | null
+  icon:
+    | 'Award'
+    | 'BookOpen'
+    | 'Briefcase'
+    | 'ClipboardCheck'
+    | 'Globe'
+    | 'GraduationCap'
+    | 'HandHeart'
+    | 'Heart'
+    | 'Home'
+    | 'Library'
+    | 'Lightbulb'
+    | 'MessageCircle'
+    | 'Mic'
+    | 'Sparkles'
+    | 'Sprout'
+    | 'Stethoscope'
+    | 'Users'
+    | 'Utensils'
+    | null
+  coverImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      _createdAt: string
+      _updatedAt: string
+      _rev: string
+      originalFilename?: string
+      label?: string
+      title?: string
+      description?: string
+      altText?: string
+      sha1hash: string
+      extension: string
+      mimeType: string
+      size: number
+      assetId: string
+      uploadId?: string
+      path: string
+      url: string
+      metadata?: SanityImageMetadata
+      source?: SanityAssetSourceData
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string | ''
+    _type: 'image'
+  }
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: programBySlugQuery
+// Query: *[_type == "program" && slug.current == $slug][0] {    _id, _type, title, "slug": slug.current, tagline, summary, accentColor, icon,    "coverImage": coverImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")},    body[]{      ...,      markDefs[]{...,   _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }}    },    "impactMetrics": impactMetrics[]->{   _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source },    "relatedStories": relatedStories[]->{   _id, _type, "slug": slug.current, title, excerpt, location, date,  "program": program->{_id, title, "slug": slug.current},  "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },    "relatedGallery": relatedGallery->{      _id, title, "slug": slug.current,      "coverImage": coverImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}    },    seo  }
+export type ProgramBySlugQueryResult = {
+  _id: string
+  _type: 'program'
+  title: string
+  slug: string
+  tagline: string | null
+  summary: string | null
+  accentColor: 'accent' | 'ink' | 'primary' | null
+  icon:
+    | 'Award'
+    | 'BookOpen'
+    | 'Briefcase'
+    | 'ClipboardCheck'
+    | 'Globe'
+    | 'GraduationCap'
+    | 'HandHeart'
+    | 'Heart'
+    | 'Home'
+    | 'Library'
+    | 'Lightbulb'
+    | 'MessageCircle'
+    | 'Mic'
+    | 'Sparkles'
+    | 'Sprout'
+    | 'Stethoscope'
+    | 'Users'
+    | 'Utensils'
+    | null
+  coverImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      _createdAt: string
+      _updatedAt: string
+      _rev: string
+      originalFilename?: string
+      label?: string
+      title?: string
+      description?: string
+      altText?: string
+      sha1hash: string
+      extension: string
+      mimeType: string
+      size: number
+      assetId: string
+      uploadId?: string
+      path: string
+      url: string
+      metadata?: SanityImageMetadata
+      source?: SanityAssetSourceData
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string | ''
+    _type: 'image'
+  }
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs: Array<{
+          linkType?: 'href' | 'page' | 'post'
+          href?: string
+          page: string | null
+          post: string | null
+          openInNewTab?: boolean
+          _type: 'link'
+          _key: string
+        }> | null
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: 'image'
+        _key: string
+        markDefs: null
+      }
+  > | null
+  impactMetrics: Array<{
+    _id: string
+    _type: 'impactMetric'
+    label: string
+    value: string
+    prefix: string | null
+    suffix: string | null
+    description: string | null
+    icon:
+      | 'Award'
+      | 'BookOpen'
+      | 'Briefcase'
+      | 'ClipboardCheck'
+      | 'Globe'
+      | 'GraduationCap'
+      | 'HandHeart'
+      | 'Heart'
+      | 'Home'
+      | 'Library'
+      | 'Lightbulb'
+      | 'MessageCircle'
+      | 'Mic'
+      | 'Sparkles'
+      | 'Sprout'
+      | 'Stethoscope'
+      | 'Users'
+      | 'Utensils'
+      | null
+    category: 'community' | 'economic' | 'education' | 'food-security' | 'health' | 'other' | null
+    asOfDate: string | null
+    source: string | null
+  }> | null
+  relatedStories: Array<{
+    _id: string
+    _type: 'story'
+    slug: string
+    title: string
+    excerpt: string | null
+    location: string | null
+    date: string | null
+    program: {
+      _id: string
+      title: string
+      slug: string
+    } | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  }> | null
+  relatedGallery: {
+    _id: string
+    title: string
+    slug: string
+    coverImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  } | null
+  seo: {
+    metaTitle?: string
+    metaDescription?: string
+    ogImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  } | null
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: programSlugsQuery
+// Query: *[_type == "program" && defined(slug.current)] {"slug": slug.current}
+export type ProgramSlugsQueryResult = Array<{
+  slug: string
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: allStoriesQuery
+// Query: *[_type == "story" && defined(slug.current)] | order(date desc) {      _id, _type, "slug": slug.current, title, excerpt, location, date,  "program": program->{_id, title, "slug": slug.current},  "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")},    "programSlug": program->slug.current  }
+export type AllStoriesQueryResult = Array<{
+  _id: string
+  _type: 'story'
+  slug: string
+  title: string
+  excerpt: string | null
+  location: string | null
+  date: string | null
+  program: {
+    _id: string
+    title: string
+    slug: string
+  } | null
+  heroImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      _createdAt: string
+      _updatedAt: string
+      _rev: string
+      originalFilename?: string
+      label?: string
+      title?: string
+      description?: string
+      altText?: string
+      sha1hash: string
+      extension: string
+      mimeType: string
+      size: number
+      assetId: string
+      uploadId?: string
+      path: string
+      url: string
+      metadata?: SanityImageMetadata
+      source?: SanityAssetSourceData
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string | ''
+    _type: 'image'
+  }
+  programSlug: string | null
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: programSlugsForFilterQuery
+// Query: *[_type == "program" && defined(slug.current)] | order(order asc, _createdAt asc) {    _id, title, "slug": slug.current  }
+export type ProgramSlugsForFilterQueryResult = Array<{
+  _id: string
+  title: string
+  slug: string
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: storyBySlugQuery
+// Query: *[_type == "story" && slug.current == $slug][0] {    _id, _type, title, "slug": slug.current, excerpt, location, date, heroQuote,    "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")},    "program": program->{_id, title, "slug": slug.current},    challenge, approach, impact,    body[]{      ...,      markDefs[]{...,   _type == "link" => {    "page": page->slug.current,    "post": post->slug.current  }}    },    pullQuotes[]{_key, quote, attribution, role},    "featuredMetrics": featuredMetrics[]->{   _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source },    "gallery": gallery->{      _id, title, "slug": slug.current,      "images": images[0...6]{        _key,        "src": image.asset->url,        "alt": image.alt,        caption      }    },    "relatedStories": relatedStories[]->{   _id, _type, "slug": slug.current, title, excerpt, location, date,  "program": program->{_id, title, "slug": slug.current},  "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },    seo  }
+export type StoryBySlugQueryResult = {
+  _id: string
+  _type: 'story'
+  title: string
+  slug: string
+  excerpt: string | null
+  location: string | null
+  date: string | null
+  heroQuote: string | null
+  heroImage: {
+    asset: {
+      _id: string
+      _type: 'sanity.imageAsset'
+      _createdAt: string
+      _updatedAt: string
+      _rev: string
+      originalFilename?: string
+      label?: string
+      title?: string
+      description?: string
+      altText?: string
+      sha1hash: string
+      extension: string
+      mimeType: string
+      size: number
+      assetId: string
+      uploadId?: string
+      path: string
+      url: string
+      metadata?: SanityImageMetadata
+      source?: SanityAssetSourceData
+    } | null
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt: string | ''
+    _type: 'image'
+  }
+  program: {
+    _id: string
+    title: string
+    slug: string
+  } | null
+  challenge: BlockContentTextOnly | null
+  approach: BlockContentTextOnly | null
+  impact: BlockContentTextOnly | null
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>
+          text?: string
+          _type: 'span'
+          _key: string
+        }>
+        style?: 'blockquote' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'normal'
+        listItem?: 'bullet' | 'number'
+        markDefs: Array<{
+          linkType?: 'href' | 'page' | 'post'
+          href?: string
+          page: string | null
+          post: string | null
+          openInNewTab?: boolean
+          _type: 'link'
+          _key: string
+        }> | null
+        level?: number
+        _type: 'block'
+        _key: string
+      }
+    | {
+        asset?: SanityImageAssetReference
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        _type: 'image'
+        _key: string
+        markDefs: null
+      }
+  > | null
+  pullQuotes: Array<{
+    _key: string
+    quote: string
+    attribution: string | null
+    role: string | null
+  }> | null
+  featuredMetrics: Array<{
+    _id: string
+    _type: 'impactMetric'
+    label: string
+    value: string
+    prefix: string | null
+    suffix: string | null
+    description: string | null
+    icon:
+      | 'Award'
+      | 'BookOpen'
+      | 'Briefcase'
+      | 'ClipboardCheck'
+      | 'Globe'
+      | 'GraduationCap'
+      | 'HandHeart'
+      | 'Heart'
+      | 'Home'
+      | 'Library'
+      | 'Lightbulb'
+      | 'MessageCircle'
+      | 'Mic'
+      | 'Sparkles'
+      | 'Sprout'
+      | 'Stethoscope'
+      | 'Users'
+      | 'Utensils'
+      | null
+    category: 'community' | 'economic' | 'education' | 'food-security' | 'health' | 'other' | null
+    asOfDate: string | null
+    source: string | null
+  }> | null
+  gallery: {
+    _id: string
+    title: string
+    slug: string
+    images: Array<{
+      _key: string
+      src: string | null
+      alt: string | null
+      caption: string | null
+    }> | null
+  } | null
+  relatedStories: Array<{
+    _id: string
+    _type: 'story'
+    slug: string
+    title: string
+    excerpt: string | null
+    location: string | null
+    date: string | null
+    program: {
+      _id: string
+      title: string
+      slug: string
+    } | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  }> | null
+  seo: {
+    metaTitle?: string
+    metaDescription?: string
+    ogImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  } | null
+} | null
+
+// Source: sanity/lib/queries.ts
+// Variable: storySlugsQuery
+// Query: *[_type == "story" && defined(slug.current)] {"slug": slug.current}
+export type StorySlugsQueryResult = Array<{
+  slug: string
+}>
+
+// Source: sanity/lib/queries.ts
+// Variable: impactPageQuery
+// Query: {  "metrics": *[_type == "impactMetric"] | order(category asc, _createdAt asc) {   _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source },  "stories": *[_type == "story"] | order(date desc) [0...6] {   _id, _type, "slug": slug.current, title, excerpt, location, date,  "program": program->{_id, title, "slug": slug.current},  "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },  "testimonials": *[_type == "testimonial"] | order(_createdAt desc) [0...3] {   _id, _type, quote, attributionName, attributionRole,  "attributionImage": attributionImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} },  "settings": *[_type == "settings"][0]{    heroQuote, missionStatement, donateUrl, donateButtonText  }}
+export type ImpactPageQueryResult = {
+  metrics: Array<{
+    _id: string
+    _type: 'impactMetric'
+    label: string
+    value: string
+    prefix: string | null
+    suffix: string | null
+    description: string | null
+    icon:
+      | 'Award'
+      | 'BookOpen'
+      | 'Briefcase'
+      | 'ClipboardCheck'
+      | 'Globe'
+      | 'GraduationCap'
+      | 'HandHeart'
+      | 'Heart'
+      | 'Home'
+      | 'Library'
+      | 'Lightbulb'
+      | 'MessageCircle'
+      | 'Mic'
+      | 'Sparkles'
+      | 'Sprout'
+      | 'Stethoscope'
+      | 'Users'
+      | 'Utensils'
+      | null
+    category: 'community' | 'economic' | 'education' | 'food-security' | 'health' | 'other' | null
+    asOfDate: string | null
+    source: string | null
+  }>
+  stories: Array<{
+    _id: string
+    _type: 'story'
+    slug: string
+    title: string
+    excerpt: string | null
+    location: string | null
+    date: string | null
+    program: {
+      _id: string
+      title: string
+      slug: string
+    } | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  }>
+  testimonials: Array<{
+    _id: string
+    _type: 'testimonial'
+    quote: string
+    attributionName: string
+    attributionRole: string | null
+    attributionImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+  }>
+  settings: {
+    heroQuote: string | null
+    missionStatement: BlockContentTextOnly | null
+    donateUrl: string | null
+    donateButtonText: string | null
+  } | null
+}
+
+// Source: sanity/lib/queries.ts
+// Variable: aboutPageQuery
+// Query: {  "settings": *[_type == "settings"][0]{    foundationName, tagline, missionStatement, visionStatement,    philosophy, differentiators,    "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")},    donateUrl, donateButtonText  },  "team": *[_type == "person"] | order(_createdAt asc) {    _id, firstName, lastName, role, bio,    "picture": picture{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")}  },  "partners": *[_type == "partner"] | order(order asc, _createdAt asc) {   _id, _type, name, url, tier, order,  "logo": logo{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")} }}
+export type AboutPageQueryResult = {
+  settings: {
+    foundationName: string | null
+    tagline: string | null
+    missionStatement: BlockContentTextOnly | null
+    visionStatement: BlockContentTextOnly | null
+    philosophy: Array<string> | null
+    differentiators: Array<string> | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+    donateUrl: string | null
+    donateButtonText: string | null
+  } | null
+  team: Array<{
+    _id: string
+    firstName: string
+    lastName: string
+    role: string | null
+    bio: string | null
+    picture: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    }
+  }>
+  partners: Array<{
+    _id: string
+    _type: 'partner'
+    name: string
+    url: string | null
+    tier: 'founding' | 'media' | 'program' | 'strategic' | null
+    order: number | null
+    logo: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+  }>
+}
+
+// Source: sanity/lib/queries.ts
+// Variable: getInvolvedQuery
+// Query: {  "settings": *[_type == "settings"][0]{    donateUrl, donateButtonText, contactEmail,    socialLinks[]{_key, platform, url},    newsletterEnabled, newsletterUrl, newsletterCtaText,    foundationName, tagline  },  "activeCampaigns": *[_type == "campaign" && active == true] | order(startDate desc) {    _id, title, "slug": slug.current, tagline,    "heroImage": heroImage{  ...,  asset->,  "alt": coalesce(alt, asset->altText, "")},    donateUrl, goalAmount, currentAmount  }}
+export type GetInvolvedQueryResult = {
+  settings: {
+    donateUrl: string | null
+    donateButtonText: string | null
+    contactEmail: string | null
+    socialLinks: Array<{
+      _key: string
+      platform: 'facebook' | 'instagram' | 'linkedin' | 'twitter' | 'youtube'
+      url: string
+    }> | null
+    newsletterEnabled: boolean | null
+    newsletterUrl: string | null
+    newsletterCtaText: string | null
+    foundationName: string | null
+    tagline: string | null
+  } | null
+  activeCampaigns: Array<{
+    _id: string
+    title: string
+    slug: string
+    tagline: string | null
+    heroImage: {
+      asset: {
+        _id: string
+        _type: 'sanity.imageAsset'
+        _createdAt: string
+        _updatedAt: string
+        _rev: string
+        originalFilename?: string
+        label?: string
+        title?: string
+        description?: string
+        altText?: string
+        sha1hash: string
+        extension: string
+        mimeType: string
+        size: number
+        assetId: string
+        uploadId?: string
+        path: string
+        url: string
+        metadata?: SanityImageMetadata
+        source?: SanityAssetSourceData
+      } | null
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt: string | ''
+      _type: 'image'
+    } | null
+    donateUrl: string | null
+    goalAmount: number | null
+    currentAmount: number | null
+  }>
+}
+
+// Source: sanity/lib/queries.ts
+// Variable: galleryRelatedStoryQuery
+// Query: *[_type == "story" && references($galleryId)][0] {    _id, title, "slug": slug.current  }
+export type GalleryRelatedStoryQueryResult = {
+  _id: string
+  title: string
+  slug: string
+} | null
+
 // Query TypeMap
 import '@sanity/client'
 declare module '@sanity/client' {
   interface SanityQueries {
-    '*[_type == "settings"][0]': SettingsQueryResult
-    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n          }\n        }\n      },\n    },\n  }\n': GetPageQueryResult
+    '*[_type == "settings"][0]{\n  ...,\n  foundationName,\n  tagline,\n  contactEmail,\n  socialLinks[] {\n    _key,\n    platform,\n    url\n  },\n  donateUrl,\n  donateButtonText,\n  missionStatement,\n  heroImage{..., asset->, "alt": coalesce(alt, asset->altText, "")},\n  heroQuote,\n  stickyDonateEnabled,\n  stickyDonateMessage,\n  newsletterEnabled,\n  newsletterUrl,\n  newsletterCtaText\n}': SettingsQueryResult
+    '\n  *[_type == \'page\' && slug.current == $slug][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    "pageBuilder": pageBuilder[]{\n      ...,\n      _type == "callToAction" => {\n        ...,\n        button {\n          ...,\n          \n  link {\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n      }\n\n        }\n      },\n      _type == "infoSection" => {\n        content[]{\n          ...,\n          markDefs[]{\n            ...,\n            \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n          }\n        }\n      },\n      _type == "programGrid" => {\n        ...,\n        "programs": programs[]->{\n  _id, _type, "slug": slug.current, title, tagline, summary, accentColor, icon,\n  "coverImage": coverImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n}\n      },\n      _type == "impactMetricsRow" => {\n        ...,\n        "metrics": metrics[]->{\n  _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source\n}\n      },\n      _type == "storyCarousel" => {\n        ...,\n        "stories": stories[]->{\n  _id, _type, "slug": slug.current, title, excerpt, location, date,\n  "program": program->{_id, title, "slug": slug.current},\n  "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n}\n      },\n      _type == "partnerLogos" => {\n        ...,\n        "partners": partners[]->{\n  _id, _type, name, url, tier, order,\n  "logo": logo{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n}\n      },\n      _type == "testimonialBlock" => {\n        ...,\n        "testimonials": testimonials[]->{\n  _id, _type, quote, attributionName, attributionRole,\n  "attributionImage": attributionImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n}\n      },\n      _type == "donateBanner" => {\n        ...,\n        "image": image{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n},\n        "resolvedDonateUrl": select(\n          useSettingsUrl == true => *[_type == "settings"][0].donateUrl,\n          overrideUrl\n        )\n      },\n    },\n  }\n': GetPageQueryResult
     '\n  *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {\n    "slug": slug.current,\n    _type,\n    _updatedAt,\n  }\n': SitemapDataResult
     '\n  *[_type == "post" && defined(slug.current)] | order(date desc, _updatedAt desc) {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': AllPostsQueryResult
     '\n  *[_type == "post" && _id != $skip && defined(slug.current)] | order(date desc, _updatedAt desc) [0...$limit] {\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': MorePostsQueryResult
     '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': PostQueryResult
     '\n  *[_type == "post" && defined(slug.current)]\n  {"slug": slug.current}\n': PostPagesSlugsResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
+    '\n  *[_type == "gallery" && defined(slug.current)] | order(date desc) {\n    _id,\n    title,\n    "slug": slug.current,\n    description,\n    coverImage,\n    date,\n    "imageCount": count(images)\n  }\n': GalleryListingQueryResult
+    '\n  *[_type == "gallery" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    description,\n    date,\n    images[] {\n      _key,\n      image {\n        ...,\n        asset->\n      },\n      caption,\n      "alt": image.alt\n    },\n    "relatedStory": *[_type == "story" && references(^._id)][0] {\n      _id, title, "slug": slug.current\n    }\n  }\n': GalleryBySlugQueryResult
+    '\n  *[_type == "gallery" && defined(slug.current)]\n  {"slug": slug.current}\n': GallerySlugsQueryResult
+    '\n  *[_type == "siteTheme"][0] {\n    headingFont,\n    "colorPrimary": colorPrimary.hex,\n    "colorAccent": colorAccent.hex,\n    "colorInk": colorInk.hex,\n    "colorSurface": colorSurface.hex\n  }\n': SiteThemeQueryResult
+    '{\n  "settings": *[_type == "settings"][0]{\n    foundationName, tagline, donateUrl, donateButtonText,\n    heroQuote, missionStatement,\n    "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n  },\n  "featuredPrograms": *[_type == "program" && featured == true]\n    | order(order asc, _createdAt asc) [0...3] { \n  _id, _type, "slug": slug.current, title, tagline, summary, accentColor, icon,\n  "coverImage": coverImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n  "featuredStory": *[_type == "story" && featured == true]\n    | order(date desc) [0] { \n  _id, _type, "slug": slug.current, title, excerpt, location, date,\n  "program": program->{_id, title, "slug": slug.current},\n  "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n  "moreStories": *[_type == "story" && featured == true]\n    | order(date desc) [1...4] { \n  _id, _type, "slug": slug.current, title, excerpt, location, date,\n  "program": program->{_id, title, "slug": slug.current},\n  "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n  "metrics": *[_type == "impactMetric"]\n    | order(_createdAt asc) [0...4] { \n  _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source\n },\n  "featuredTestimonial": *[_type == "testimonial" && featured == true]\n    | order(_createdAt desc) [0] { \n  _id, _type, quote, attributionName, attributionRole,\n  "attributionImage": attributionImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n  "partners": *[_type == "partner"]\n    | order(order asc, _createdAt asc) { \n  _id, _type, name, url, tier, order,\n  "logo": logo{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n  "activeCampaign": *[_type == "campaign" && active == true && featured == true]\n    | order(startDate desc) [0] {\n      _id, title, "slug": slug.current, tagline,\n      "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n},\n      donateUrl, goalAmount, currentAmount\n    }\n}': HomepageQueryResult
+    '\n  *[_type == "program"] | order(order asc, _createdAt asc) {\n    \n  _id, _type, "slug": slug.current, title, tagline, summary, accentColor, icon,\n  "coverImage": coverImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n\n  }\n': AllProgramsQueryResult
+    '\n  *[_type == "program" && slug.current == $slug][0] {\n    _id, _type, title, "slug": slug.current, tagline, summary, accentColor, icon,\n    "coverImage": coverImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n},\n    body[]{\n      ...,\n      markDefs[]{..., \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n}\n    },\n    "impactMetrics": impactMetrics[]->{ \n  _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source\n },\n    "relatedStories": relatedStories[]->{ \n  _id, _type, "slug": slug.current, title, excerpt, location, date,\n  "program": program->{_id, title, "slug": slug.current},\n  "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n    "relatedGallery": relatedGallery->{\n      _id, title, "slug": slug.current,\n      "coverImage": coverImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n    },\n    seo\n  }\n': ProgramBySlugQueryResult
+    '\n  *[_type == "program" && defined(slug.current)] {"slug": slug.current}\n': ProgramSlugsQueryResult
+    '\n  *[_type == "story" && defined(slug.current)] | order(date desc) {\n    \n  _id, _type, "slug": slug.current, title, excerpt, location, date,\n  "program": program->{_id, title, "slug": slug.current},\n  "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n,\n    "programSlug": program->slug.current\n  }\n': AllStoriesQueryResult
+    '\n  *[_type == "program" && defined(slug.current)] | order(order asc, _createdAt asc) {\n    _id, title, "slug": slug.current\n  }\n': ProgramSlugsForFilterQueryResult
+    '\n  *[_type == "story" && slug.current == $slug][0] {\n    _id, _type, title, "slug": slug.current, excerpt, location, date, heroQuote,\n    "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n},\n    "program": program->{_id, title, "slug": slug.current},\n    challenge, approach, impact,\n    body[]{\n      ...,\n      markDefs[]{..., \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n}\n    },\n    pullQuotes[]{_key, quote, attribution, role},\n    "featuredMetrics": featuredMetrics[]->{ \n  _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source\n },\n    "gallery": gallery->{\n      _id, title, "slug": slug.current,\n      "images": images[0...6]{\n        _key,\n        "src": image.asset->url,\n        "alt": image.alt,\n        caption\n      }\n    },\n    "relatedStories": relatedStories[]->{ \n  _id, _type, "slug": slug.current, title, excerpt, location, date,\n  "program": program->{_id, title, "slug": slug.current},\n  "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n    seo\n  }\n': StoryBySlugQueryResult
+    '\n  *[_type == "story" && defined(slug.current)] {"slug": slug.current}\n': StorySlugsQueryResult
+    '{\n  "metrics": *[_type == "impactMetric"] | order(category asc, _createdAt asc) { \n  _id, _type, label, value, prefix, suffix, description, icon, category, asOfDate, source\n },\n  "stories": *[_type == "story"] | order(date desc) [0...6] { \n  _id, _type, "slug": slug.current, title, excerpt, location, date,\n  "program": program->{_id, title, "slug": slug.current},\n  "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n  "testimonials": *[_type == "testimonial"] | order(_createdAt desc) [0...3] { \n  _id, _type, quote, attributionName, attributionRole,\n  "attributionImage": attributionImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n },\n  "settings": *[_type == "settings"][0]{\n    heroQuote, missionStatement, donateUrl, donateButtonText\n  }\n}': ImpactPageQueryResult
+    '{\n  "settings": *[_type == "settings"][0]{\n    foundationName, tagline, missionStatement, visionStatement,\n    philosophy, differentiators,\n    "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n},\n    donateUrl, donateButtonText\n  },\n  "team": *[_type == "person"] | order(_createdAt asc) {\n    _id, firstName, lastName, role, bio,\n    "picture": picture{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n  },\n  "partners": *[_type == "partner"] | order(order asc, _createdAt asc) { \n  _id, _type, name, url, tier, order,\n  "logo": logo{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n}\n }\n}': AboutPageQueryResult
+    '{\n  "settings": *[_type == "settings"][0]{\n    donateUrl, donateButtonText, contactEmail,\n    socialLinks[]{_key, platform, url},\n    newsletterEnabled, newsletterUrl, newsletterCtaText,\n    foundationName, tagline\n  },\n  "activeCampaigns": *[_type == "campaign" && active == true] | order(startDate desc) {\n    _id, title, "slug": slug.current, tagline,\n    "heroImage": heroImage{\n  ...,\n  asset->,\n  "alt": coalesce(alt, asset->altText, "")\n},\n    donateUrl, goalAmount, currentAmount\n  }\n}': GetInvolvedQueryResult
+    '\n  *[_type == "story" && references($galleryId)][0] {\n    _id, title, "slug": slug.current\n  }\n': GalleryRelatedStoryQueryResult
   }
 }

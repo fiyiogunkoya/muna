@@ -15,6 +15,125 @@
 export declare const internalGroqTypeReferenceTo: unique symbol
 
 // Source: ../sanity.schema.json
+export type SanityImageAssetReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+}
+
+export type DonateBanner = {
+  _type: 'donateBanner'
+  heading: string
+  body?: BlockContentTextOnly
+  buttonText?: string
+  useSettingsUrl?: boolean
+  overrideUrl?: string
+  image?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  tone?: 'light' | 'dark' | 'accent'
+}
+
+export type TestimonialReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'testimonial'
+}
+
+export type TestimonialBlock = {
+  _type: 'testimonialBlock'
+  eyebrow?: string
+  heading?: string
+  testimonials?: Array<
+    {
+      _key: string
+    } & TestimonialReference
+  >
+  layout?: 'single' | 'carousel'
+}
+
+export type PartnerReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'partner'
+}
+
+export type PartnerLogos = {
+  _type: 'partnerLogos'
+  eyebrow?: string
+  heading?: string
+  partners?: Array<
+    {
+      _key: string
+    } & PartnerReference
+  >
+  tiersFilter?: Array<string>
+}
+
+export type StoryReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'story'
+}
+
+export type StoryCarousel = {
+  _type: 'storyCarousel'
+  eyebrow?: string
+  heading?: string
+  stories?: Array<
+    {
+      _key: string
+    } & StoryReference
+  >
+  variant?: 'cards' | 'large'
+}
+
+export type ImpactMetricReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'impactMetric'
+}
+
+export type ImpactMetricsRow = {
+  _type: 'impactMetricsRow'
+  eyebrow?: string
+  heading?: string
+  metrics?: Array<
+    {
+      _key: string
+    } & ImpactMetricReference
+  >
+}
+
+export type ProgramReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'program'
+}
+
+export type ProgramGrid = {
+  _type: 'programGrid'
+  eyebrow?: string
+  heading?: string
+  programs?: Array<
+    {
+      _key: string
+    } & ProgramReference
+  >
+  layout?: 'grid' | 'list'
+}
+
 export type PageReference = {
   _ref: string
   _type: 'reference'
@@ -36,13 +155,6 @@ export type Link = {
   page?: PageReference
   post?: PostReference
   openInNewTab?: boolean
-}
-
-export type SanityImageAssetReference = {
-  _ref: string
-  _type: 'reference'
-  _weak?: boolean
-  [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
 }
 
 export type CallToAction = {
@@ -127,6 +239,317 @@ export type Button = {
   link?: Link
 }
 
+export type Campaign = {
+  _id: string
+  _type: 'campaign'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  tagline?: string
+  heroImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  startDate?: string
+  endDate?: string
+  goalAmount?: number
+  currentAmount?: number
+  donateUrl?: string
+  body?: BlockContent
+  featured?: boolean
+  active?: boolean
+}
+
+export type SanityImageCrop = {
+  _type: 'sanity.imageCrop'
+  top: number
+  bottom: number
+  left: number
+  right: number
+}
+
+export type SanityImageHotspot = {
+  _type: 'sanity.imageHotspot'
+  x: number
+  y: number
+  height: number
+  width: number
+}
+
+export type Slug = {
+  _type: 'slug'
+  current: string
+  source?: string
+}
+
+export type Partner = {
+  _id: string
+  _type: 'partner'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  name: string
+  logo?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  url?: string
+  tier?: 'founding' | 'strategic' | 'program' | 'media'
+  order?: number
+}
+
+export type Testimonial = {
+  _id: string
+  _type: 'testimonial'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  quote: string
+  attributionName: string
+  attributionRole?: string
+  attributionImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  relatedProgram?: ProgramReference
+  featured?: boolean
+}
+
+export type ImpactMetric = {
+  _id: string
+  _type: 'impactMetric'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  label: string
+  value: string
+  prefix?: string
+  suffix?: string
+  description?: string
+  icon?:
+    | 'Heart'
+    | 'BookOpen'
+    | 'Sprout'
+    | 'Users'
+    | 'Home'
+    | 'Lightbulb'
+    | 'Globe'
+    | 'HandHeart'
+    | 'GraduationCap'
+    | 'Stethoscope'
+    | 'Utensils'
+    | 'Briefcase'
+    | 'Library'
+    | 'Award'
+    | 'ClipboardCheck'
+    | 'Mic'
+    | 'MessageCircle'
+    | 'Sparkles'
+  category?: 'education' | 'health' | 'community' | 'food-security' | 'economic' | 'other'
+  asOfDate?: string
+  source?: string
+}
+
+export type GalleryReference = {
+  _ref: string
+  _type: 'reference'
+  _weak?: boolean
+  [internalGroqTypeReferenceTo]?: 'gallery'
+}
+
+export type Story = {
+  _id: string
+  _type: 'story'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  program?: ProgramReference
+  location?: string
+  date?: string
+  excerpt?: string
+  heroImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  heroQuote?: string
+  challenge?: BlockContentTextOnly
+  approach?: BlockContentTextOnly
+  impact?: BlockContentTextOnly
+  body?: BlockContent
+  pullQuotes?: Array<{
+    quote: string
+    attribution?: string
+    role?: string
+    _type: 'pullQuote'
+    _key: string
+  }>
+  featuredMetrics?: Array<
+    {
+      _key: string
+    } & ImpactMetricReference
+  >
+  gallery?: GalleryReference
+  relatedStories?: Array<
+    {
+      _key: string
+    } & StoryReference
+  >
+  featured?: boolean
+  seo?: {
+    metaTitle?: string
+    metaDescription?: string
+    ogImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  }
+}
+
+export type Program = {
+  _id: string
+  _type: 'program'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  tagline?: string
+  summary?: string
+  icon?:
+    | 'Heart'
+    | 'BookOpen'
+    | 'Sprout'
+    | 'Users'
+    | 'Home'
+    | 'Lightbulb'
+    | 'Globe'
+    | 'HandHeart'
+    | 'GraduationCap'
+    | 'Stethoscope'
+    | 'Utensils'
+    | 'Briefcase'
+    | 'Library'
+    | 'Award'
+    | 'ClipboardCheck'
+    | 'Mic'
+    | 'MessageCircle'
+    | 'Sparkles'
+  accentColor?: 'primary' | 'accent' | 'ink'
+  coverImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  body?: BlockContent
+  impactMetrics?: Array<
+    {
+      _key: string
+    } & ImpactMetricReference
+  >
+  relatedStories?: Array<
+    {
+      _key: string
+    } & StoryReference
+  >
+  relatedGallery?: GalleryReference
+  order?: number
+  featured?: boolean
+  seo?: {
+    metaTitle?: string
+    metaDescription?: string
+    ogImage?: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+  }
+}
+
+export type Gallery = {
+  _id: string
+  _type: 'gallery'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  title: string
+  slug: Slug
+  description?: string
+  coverImage: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  images?: Array<{
+    image: {
+      asset?: SanityImageAssetReference
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      alt?: string
+      _type: 'image'
+    }
+    caption?: string
+    _type: 'galleryImage'
+    _key: string
+  }>
+  date?: string
+}
+
+export type SiteTheme = {
+  _id: string
+  _type: 'siteTheme'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  headingFont?: 'Playfair Display' | 'Oswald' | 'Bebas Neue' | 'Montserrat' | 'Libre Baskerville'
+  colorPrimary?: Color
+  colorAccent?: Color
+  colorInk?: Color
+  colorSurface?: Color
+}
+
+export type Color = {
+  _type: 'color'
+  hex?: string
+  alpha?: number
+  hsl?: HslaColor
+  hsv?: HsvaColor
+  rgb?: RgbaColor
+}
+
 export type Settings = {
   _id: string
   _type: 'settings'
@@ -165,22 +588,35 @@ export type Settings = {
     metadataBase?: string
     _type: 'image'
   }
-}
-
-export type SanityImageCrop = {
-  _type: 'sanity.imageCrop'
-  top: number
-  bottom: number
-  left: number
-  right: number
-}
-
-export type SanityImageHotspot = {
-  _type: 'sanity.imageHotspot'
-  x: number
-  y: number
-  height: number
-  width: number
+  foundationName?: string
+  tagline?: string
+  contactEmail?: string
+  socialLinks?: Array<{
+    platform: 'instagram' | 'twitter' | 'facebook' | 'linkedin' | 'youtube'
+    url: string
+    _type: 'socialLink'
+    _key: string
+  }>
+  donateUrl?: string
+  donateButtonText?: string
+  missionStatement?: BlockContentTextOnly
+  visionStatement?: BlockContentTextOnly
+  philosophy?: Array<string>
+  differentiators?: Array<string>
+  heroImage?: {
+    asset?: SanityImageAssetReference
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    alt?: string
+    _type: 'image'
+  }
+  heroQuote?: string
+  stickyDonateEnabled?: boolean
+  stickyDonateMessage?: string
+  newsletterEnabled?: boolean
+  newsletterUrl?: string
+  newsletterCtaText?: string
 }
 
 export type Page = {
@@ -200,6 +636,24 @@ export type Page = {
     | ({
         _key: string
       } & InfoSection)
+    | ({
+        _key: string
+      } & ProgramGrid)
+    | ({
+        _key: string
+      } & ImpactMetricsRow)
+    | ({
+        _key: string
+      } & StoryCarousel)
+    | ({
+        _key: string
+      } & PartnerLogos)
+    | ({
+        _key: string
+      } & TestimonialBlock)
+    | ({
+        _key: string
+      } & DonateBanner)
   >
 }
 
@@ -240,6 +694,8 @@ export type Person = {
   _rev: string
   firstName: string
   lastName: string
+  role?: string
+  bio?: string
   picture: {
     asset?: SanityImageAssetReference
     media?: unknown
@@ -250,10 +706,28 @@ export type Person = {
   }
 }
 
-export type Slug = {
-  _type: 'slug'
-  current: string
-  source?: string
+export type RgbaColor = {
+  _type: 'rgbaColor'
+  r?: number
+  g?: number
+  b?: number
+  a?: number
+}
+
+export type HsvaColor = {
+  _type: 'hsvaColor'
+  h?: number
+  s?: number
+  v?: number
+  a?: number
+}
+
+export type HslaColor = {
+  _type: 'hslaColor'
+  h?: number
+  s?: number
+  l?: number
+  a?: number
 }
 
 export type SanityAssistInstructionTask = {
@@ -491,23 +965,47 @@ export type Geopoint = {
 }
 
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
+  | DonateBanner
+  | TestimonialReference
+  | TestimonialBlock
+  | PartnerReference
+  | PartnerLogos
+  | StoryReference
+  | StoryCarousel
+  | ImpactMetricReference
+  | ImpactMetricsRow
+  | ProgramReference
+  | ProgramGrid
   | PageReference
   | PostReference
   | Link
-  | SanityImageAssetReference
   | CallToAction
   | InfoSection
   | BlockContentTextOnly
   | BlockContent
   | Button
-  | Settings
+  | Campaign
   | SanityImageCrop
   | SanityImageHotspot
+  | Slug
+  | Partner
+  | Testimonial
+  | ImpactMetric
+  | GalleryReference
+  | Story
+  | Program
+  | Gallery
+  | SiteTheme
+  | Color
+  | Settings
   | Page
   | PersonReference
   | Post
   | Person
-  | Slug
+  | RgbaColor
+  | HsvaColor
+  | HslaColor
   | SanityAssistInstructionTask
   | SanityAssistTaskStatus
   | SanityAssistSchemaTypeAnnotations

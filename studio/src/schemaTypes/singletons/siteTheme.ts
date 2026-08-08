@@ -24,6 +24,34 @@ export const siteTheme = defineType({
       },
       initialValue: 'Montserrat',
     }),
+    defineField({
+      name: 'colorPrimary',
+      title: 'Primary color',
+      description: 'Brand action color — donate buttons, links, accents that drive engagement.',
+      type: 'color',
+      options: {disableAlpha: true},
+    }),
+    defineField({
+      name: 'colorAccent',
+      title: 'Accent color',
+      description: 'Secondary highlight — eyebrows, stat numbers, kinetic accents.',
+      type: 'color',
+      options: {disableAlpha: true},
+    }),
+    defineField({
+      name: 'colorInk',
+      title: 'Ink color',
+      description: 'Default body text color on light surfaces.',
+      type: 'color',
+      options: {disableAlpha: true},
+    }),
+    defineField({
+      name: 'colorSurface',
+      title: 'Surface color',
+      description: 'Primary page background.',
+      type: 'color',
+      options: {disableAlpha: true},
+    }),
   ],
   preview: {
     prepare() {

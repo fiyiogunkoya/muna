@@ -1,0 +1,83 @@
+<h2>How should we architect admin-managed content?</h2>
+<p class="subtitle">Three approaches for letting non-technical admins upload photos, manage galleries, and change fonts — all through Sanity Studio</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Sanity-Native (Recommended)</h3>
+      <p><strong>Everything lives in Sanity schemas.</strong> Add a <code>gallery</code> document type with image arrays, a <code>siteTheme</code> singleton for font selection, and extend existing page/post schemas. Admins do everything in the Sanity Studio they already have.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Single admin interface — no extra tools to learn</li>
+            <li>Built on what you already have (schemas, studio, visual editing)</li>
+            <li>Real-time preview of font changes via Presentation Tool</li>
+            <li>Image CDN, hotspot cropping, and Unsplash already wired up</li>
+            <li>Cheapest to build and maintain</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Bulk photo uploads can be tedious (one at a time in Sanity)</li>
+            <li>Gallery layout is code-defined, not drag-and-drop</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Sanity + External Image Service</h3>
+      <p>Use Sanity for content and fonts, but integrate <strong>Cloudinary</strong> or a similar service for photo management. Admins upload photos in Cloudinary's media library, then reference them in Sanity.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Better bulk upload and image management UI</li>
+            <li>Advanced image transformations (auto-crop, filters, watermarks)</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Two tools for admins to learn (Sanity + Cloudinary)</li>
+            <li>Extra monthly cost for Cloudinary</li>
+            <li>More integration complexity</li>
+            <li>Sanity already has a solid image CDN</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Custom Admin Dashboard</h3>
+      <p>Build a separate, simplified admin UI on top of Sanity's API. Admins get a custom drag-and-drop interface instead of using the Sanity Studio directly.</p>
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Pros</h4>
+          <ul>
+            <li>Fully custom UX tailored to your admins</li>
+            <li>Can hide all Sanity complexity</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Cons</h4>
+          <ul>
+            <li>Significant extra development time</li>
+            <li>Two codebases to maintain</li>
+            <li>Reinvents what Sanity Studio already does well</li>
+            <li>Overkill for 1-2 admins</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

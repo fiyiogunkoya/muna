@@ -11,6 +11,8 @@ import {Toaster} from 'sonner'
 import DraftModeToast from '@/app/components/DraftModeToast'
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
+import MotionConfig from '@/app/components/motion/MotionConfig'
+import StickyDonateBar from '@/app/components/ui/StickyDonateBar'
 import * as demo from '@/sanity/lib/demo'
 import {sanityFetch, SanityLive} from '@/sanity/lib/live'
 import {settingsQuery, siteThemeQuery} from '@/sanity/lib/queries'
@@ -71,16 +73,27 @@ const fontUrlMap: Record<string, string> = {
 
 export default async function RootLayout({children}: {children: React.ReactNode}) {
   const {isEnabled: isDraftMode} = await draftMode()
-  const {data: theme} = await sanityFetch({query: siteThemeQuery, stega: false})
+  const [{data: theme}, {data: settings}] = await Promise.all([
+    sanityFetch({query: siteThemeQuery, stega: false}),
+    sanityFetch({query: settingsQuery, stega: false}),
+  ])
 
   const headingFont = theme?.headingFont || 'Montserrat'
   const fontUrl = fontUrlMap[headingFont]
 
+  const themeStyle = {
+    '--font-heading': `"${headingFont}", sans-serif`,
+    ...(theme?.colorPrimary ? {'--color-primary': theme.colorPrimary} : {}),
+    ...(theme?.colorAccent ? {'--color-accent': theme.colorAccent} : {}),
+    ...(theme?.colorInk ? {'--color-ink': theme.colorInk} : {}),
+    ...(theme?.colorSurface ? {'--color-surface': theme.colorSurface} : {}),
+  } as React.CSSProperties
+
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${ibmPlexMono.variable} bg-white text-black`}
-      style={{'--font-heading': `"${headingFont}", sans-serif`} as React.CSSProperties}
+      className={`${inter.variable} ${ibmPlexMono.variable} bg-surface text-ink`}
+      style={themeStyle}
     >
       <head>
         {fontUrl && (
@@ -95,19 +108,27 @@ export default async function RootLayout({children}: {children: React.ReactNode}
         )}
       </head>
       <body>
-        <section className="min-h-screen pt-24">
-          <Toaster />
-          {isDraftMode && (
-            <>
-              <DraftModeToast />
-              <VisualEditing />
-            </>
-          )}
-          <SanityLive onError={handleError} />
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </section>
+        <MotionConfig>
+          <div className="min-h-screen pt-24">
+            <Toaster />
+            {isDraftMode && (
+              <>
+                <DraftModeToast />
+                <VisualEditing />
+              </>
+            )}
+            <SanityLive onError={handleError} />
+            <Header />
+            <main>{children}</main>
+            <Footer />
+            <StickyDonateBar
+              enabled={settings?.stickyDonateEnabled}
+              donateUrl={settings?.donateUrl}
+              buttonText={settings?.donateButtonText}
+              message={settings?.stickyDonateMessage}
+            />
+          </div>
+        </MotionConfig>
         <SpeedInsights />
       </body>
     </html>

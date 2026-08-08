@@ -1,0 +1,141 @@
+import {SparklesIcon} from '@sanity/icons'
+import {defineField, defineType} from 'sanity'
+
+export const PROGRAM_ICONS = [
+  'Heart',
+  'BookOpen',
+  'Sprout',
+  'Users',
+  'Home',
+  'Lightbulb',
+  'Globe',
+  'HandHeart',
+  'GraduationCap',
+  'Stethoscope',
+  'Utensils',
+  'Briefcase',
+  'Library',
+  'Award',
+  'ClipboardCheck',
+  'Mic',
+  'MessageCircle',
+  'Sparkles',
+] as const
+
+export const program = defineType({
+  name: 'program',
+  title: 'Program',
+  type: 'document',
+  icon: SparklesIcon,
+  groups: [
+    {name: 'content', title: 'Content', default: true},
+    {name: 'related', title: 'Related'},
+    {name: 'seo', title: 'SEO'},
+  ],
+  fields: [
+    defineField({name: 'title', type: 'string', group: 'content', validation: (r) => r.required()}),
+    defineField({
+      name: 'slug',
+      type: 'slug',
+      group: 'content',
+      options: {source: 'title', maxLength: 96},
+      validation: (r) => r.required(),
+    }),
+    defineField({
+      name: 'tagline',
+      type: 'string',
+      description: 'One-liner shown on program cards (max 120 chars).',
+      group: 'content',
+      validation: (r) => r.max(120),
+    }),
+    defineField({
+      name: 'summary',
+      type: 'text',
+      rows: 3,
+      description: 'Slightly longer summary for the programs listing page.',
+      group: 'content',
+    }),
+    defineField({
+      name: 'icon',
+      type: 'string',
+      description: 'Icon shown on cards and hero.',
+      options: {list: PROGRAM_ICONS.map((v) => ({title: v, value: v}))},
+      group: 'content',
+    }),
+    defineField({
+      name: 'accentColor',
+      type: 'string',
+      description: 'Tonal accent applied to the program card.',
+      options: {
+        list: [
+          {title: 'Primary', value: 'primary'},
+          {title: 'Accent', value: 'accent'},
+          {title: 'Ink', value: 'ink'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'primary',
+      group: 'content',
+    }),
+    defineField({
+      name: 'coverImage',
+      type: 'image',
+      options: {hotspot: true, aiAssist: {imageDescriptionField: 'alt'}},
+      fields: [{name: 'alt', type: 'string', title: 'Alternative text'}],
+      group: 'content',
+      validation: (r) => r.required(),
+    }),
+    defineField({name: 'body', type: 'blockContent', group: 'content'}),
+    defineField({
+      name: 'impactMetrics',
+      title: 'Impact metrics',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'impactMetric'}]}],
+      group: 'related',
+    }),
+    defineField({
+      name: 'relatedStories',
+      title: 'Related stories',
+      type: 'array',
+      of: [{type: 'reference', to: [{type: 'story'}]}],
+      group: 'related',
+    }),
+    defineField({
+      name: 'relatedGallery',
+      type: 'reference',
+      to: [{type: 'gallery'}],
+      group: 'related',
+    }),
+    defineField({
+      name: 'order',
+      type: 'number',
+      description: 'Manual ordering on the programs listing page (lower = earlier).',
+      group: 'content',
+    }),
+    defineField({
+      name: 'featured',
+      type: 'boolean',
+      description: 'Surface this program on the homepage.',
+      initialValue: false,
+      group: 'content',
+    }),
+    defineField({
+      name: 'seo',
+      type: 'object',
+      group: 'seo',
+      fields: [
+        {name: 'metaTitle', type: 'string'},
+        {name: 'metaDescription', type: 'text', rows: 2},
+        {
+          name: 'ogImage',
+          type: 'image',
+          options: {hotspot: true},
+          fields: [{name: 'alt', type: 'string'}],
+        },
+      ],
+    }),
+  ],
+  preview: {
+    select: {title: 'title', subtitle: 'tagline', media: 'coverImage'},
+  },
+})

@@ -26,6 +26,18 @@ export const person = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'role',
+      title: 'Role',
+      type: 'string',
+      description: 'Job title or role (e.g. "Executive Director").',
+    }),
+    defineField({
+      name: 'bio',
+      title: 'Short bio',
+      type: 'text',
+      rows: 4,
+    }),
+    defineField({
       name: 'picture',
       title: 'Picture',
       type: 'image',
@@ -61,13 +73,14 @@ export const person = defineType({
     select: {
       firstName: 'firstName',
       lastName: 'lastName',
+      role: 'role',
       picture: 'picture',
     },
-    prepare(selection) {
+    prepare({firstName, lastName, role, picture}) {
       return {
-        title: `${selection.firstName} ${selection.lastName}`,
-        subtitle: 'Person',
-        media: selection.picture,
+        title: `${firstName} ${lastName}`,
+        subtitle: role || 'Person',
+        media: picture,
       }
     },
   },

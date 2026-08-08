@@ -2,11 +2,15 @@ import type {Metadata} from 'next'
 import Link from 'next/link'
 import {format, parseISO} from 'date-fns'
 import {notFound} from 'next/navigation'
+import {ArrowUpRight} from 'lucide-react'
 
 import {sanityFetch} from '@/sanity/lib/live'
-import {galleryBySlugQuery, gallerySlugsQuery} from '@/sanity/lib/queries'
+import {galleryBySlugQuery, gallerySlugsQuery, settingsQuery} from '@/sanity/lib/queries'
 import {dataset, projectId} from '@/sanity/lib/api'
 import GalleryGrid from '@/app/components/GalleryGrid'
+import Container from '@/app/components/ui/Container'
+import Eyebrow from '@/app/components/ui/Eyebrow'
+import DonateCallout from '@/app/components/sections/DonateCallout'
 
 type Props = {
   params: Promise<{slug: string}>
@@ -36,7 +40,6 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 function sanityImageUrl(ref: string, width: number): string {
-  // Parse Sanity image asset ID: image-<id>-<dimensions>-<format>
   const parts = ref.replace('image-', '').split('-')
   const format = parts.pop()
   const dimensions = parts.pop()
@@ -46,7 +49,10 @@ function sanityImageUrl(ref: string, width: number): string {
 
 export default async function GalleryDetailPage(props: Props) {
   const params = await props.params
-  const {data: gallery} = await sanityFetch({query: galleryBySlugQuery, params})
+  const [{data: gallery}, {data: settings}] = await Promise.all([
+    sanityFetch({query: galleryBySlugQuery, params}),
+    sanityFetch({query: settingsQuery}),
+  ])
 
   if (!gallery) {
     notFound()
@@ -62,33 +68,59 @@ export default async function GalleryDetailPage(props: Props) {
     }))
 
   return (
-    <div className="my-12 lg:my-24">
-      <div className="container">
-        <Link href="/gallery" className="text-sm text-gray-500 hover:text-black mb-6 inline-block">
-          &larr; All Galleries
-        </Link>
-        <div className="pb-6 border-b border-gray-100 mb-8">
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl">{gallery.title}</h1>
-          <div className="flex gap-2 text-sm text-gray-500 mt-3">
-            {gallery.date && <span>{format(parseISO(gallery.date), 'MMMM d, yyyy')}</span>}
-            {gallery.date && images.length > 0 && <span>&middot;</span>}
-            {images.length > 0 && (
-              <span>
-                {images.length} {images.length === 1 ? 'photo' : 'photos'}
-              </span>
+    <>
+      <section className="pt-28 md:pt-36 pb-10">
+        <Container size="wide">
+          <Link
+            href="/gallery"
+            className="text-sm font-medium text-ink/55 hover:text-ink transition-colors mb-6 inline-block"
+          >
+            ← All galleries
+          </Link>
+          <div className="border-b border-ink/10 pb-8">
+            <Eyebrow tone="primary">Gallery</Eyebrow>
+            <h1 className="mt-4 font-[var(--font-heading,inherit)] text-4xl sm:text-5xl lg:text-7xl leading-[1.05] tracking-tight">
+              {gallery.title}
+            </h1>
+            <div className="flex flex-wrap gap-3 text-xs font-mono uppercase tracking-[0.18em] text-ink/55 mt-5">
+              {gallery.date && <span>{format(parseISO(gallery.date), 'LLL d, yyyy')}</span>}
+              {gallery.date && images.length > 0 && <span>·</span>}
+              {images.length > 0 && (
+                <span>
+                  {images.length} {images.length === 1 ? 'photo' : 'photos'}
+                </span>
+              )}
+            </div>
+            {gallery.description && (
+              <p className="text-ink/70 mt-5 max-w-2xl leading-relaxed">{gallery.description}</p>
+            )}
+            {gallery.relatedStory && (
+              <Link
+                href={`/stories/${gallery.relatedStory.slug}`}
+                className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink text-white px-5 py-2.5 text-sm font-medium hover:bg-ink/90 transition-colors"
+              >
+                Read the story: {gallery.relatedStory.title}
+                <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </Link>
             )}
           </div>
-          {gallery.description && (
-            <p className="text-gray-600 mt-4 max-w-2xl">{gallery.description}</p>
-          )}
-        </div>
+        </Container>
+      </section>
 
-        {images.length === 0 ? (
-          <p className="text-gray-500 py-12 text-center">No photos in this gallery yet.</p>
-        ) : (
-          <GalleryGrid images={images} />
-        )}
-      </div>
-    </div>
+      <section className="pb-section-lg">
+        <Container size="wide">
+          {images.length === 0 ? (
+            <p className="text-ink/60 py-12 text-center">No photos in this gallery yet.</p>
+          ) : (
+            <GalleryGrid images={images} />
+          )}
+        </Container>
+      </section>
+
+      <DonateCallout
+        donateUrl={settings?.donateUrl}
+        donateText={settings?.donateButtonText}
+      />
+    </>
   )
 }

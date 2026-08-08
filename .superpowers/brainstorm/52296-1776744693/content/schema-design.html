@@ -1,0 +1,55 @@
+<h2>Sanity Schema Design</h2>
+<p class="subtitle">New document types and modifications to support galleries, fonts, and foundation pages</p>
+
+<div class="section">
+  <h3>New: Gallery Document</h3>
+  <div class="mockup">
+    <div class="mockup-header">gallery (document type)</div>
+    <div class="mockup-body" style="font-family: monospace; font-size: 14px; line-height: 1.8;">
+      <div><strong>title</strong> — string (required)</div>
+      <div><strong>slug</strong> — slug (auto-generated from title)</div>
+      <div><strong>description</strong> — text (optional, short summary)</div>
+      <div><strong>coverImage</strong> — image (used as thumbnail on gallery listing)</div>
+      <div><strong>images</strong> — array of image objects, each with:</div>
+      <div style="padding-left: 24px;">• image — image with hotspot</div>
+      <div style="padding-left: 24px;">• caption — string (optional)</div>
+      <div style="padding-left: 24px;">• alt — string (for accessibility, AI-assisted)</div>
+      <div><strong>date</strong> — date (when the event/photos were taken)</div>
+      <div><strong>orderRank</strong> — string (for drag-and-drop ordering in Studio)</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>New: Site Theme Singleton</h3>
+  <div class="mockup">
+    <div class="mockup-header">siteTheme (singleton — one instance, always accessible)</div>
+    <div class="mockup-body" style="font-family: monospace; font-size: 14px; line-height: 1.8;">
+      <div><strong>headingFont</strong> — string (dropdown selector)</div>
+      <div style="padding-left: 24px;">Options: 5 curated Google Fonts suited for bold/impactful headings</div>
+      <div style="padding-left: 24px;">e.g., "Playfair Display", "Oswald", "Bebas Neue", "Montserrat", "Libre Baskerville"</div>
+      <div><strong>previewText</strong> — read-only preview showing the selected font on sample text</div>
+    </div>
+  </div>
+  <p style="margin-top: 12px; color: #999;">Admins pick a heading font from the dropdown → the frontend loads it from Google Fonts → all headings update site-wide. Body font stays fixed (e.g., Inter) for readability.</p>
+</div>
+
+<div class="section">
+  <h3>Extend: Site Settings (existing)</h3>
+  <div class="mockup">
+    <div class="mockup-header">settings (add new fields)</div>
+    <div class="mockup-body" style="font-family: monospace; font-size: 14px; line-height: 1.8;">
+      <div><strong>foundationName</strong> — string</div>
+      <div><strong>tagline</strong> — string (mission one-liner for hero sections)</div>
+      <div><strong>contactEmail</strong> — string</div>
+      <div><strong>socialLinks</strong> — array of { platform, url }</div>
+      <div><strong>donateUrl</strong> — url (link to GoFundMe, PayPal, etc.)</div>
+      <div><strong>donateButtonText</strong> — string (e.g., "Support Our Mission")</div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>Existing schemas — no changes needed</h3>
+  <p style="color: #999;">The existing <code>page</code>, <code>post</code>, and <code>person</code> schemas already support the blog/stories functionality. Posts already have cover images, authors, and rich content with inline images. The page builder with CTA and info sections covers the About and other content pages.</p>
+</div>

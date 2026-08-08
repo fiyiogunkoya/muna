@@ -7,8 +7,11 @@ import Avatar from '@/app/components/Avatar'
 import {MorePosts} from '@/app/components/Posts'
 import PortableText from '@/app/components/PortableText'
 import Image from '@/app/components/SanityImage'
+import Container from '@/app/components/ui/Container'
+import Eyebrow from '@/app/components/ui/Eyebrow'
+import DonateCallout from '@/app/components/sections/DonateCallout'
 import {sanityFetch} from '@/sanity/lib/live'
-import {postPagesSlugs, postQuery} from '@/sanity/lib/queries'
+import {postPagesSlugs, postQuery, settingsQuery} from '@/sanity/lib/queries'
 import {resolveOpenGraphImage} from '@/sanity/lib/utils'
 
 type Props = {
@@ -59,7 +62,10 @@ export async function generateMetadata(props: Props, parent: ResolvingMetadata):
 
 export default async function PostPage(props: Props) {
   const params = await props.params
-  const [{data: post}] = await Promise.all([sanityFetch({query: postQuery, params})])
+  const [{data: post}, {data: settings}] = await Promise.all([
+    sanityFetch({query: postQuery, params}),
+    sanityFetch({query: settingsQuery}),
+  ])
 
   if (!post?._id) {
     return notFound()
@@ -67,51 +73,55 @@ export default async function PostPage(props: Props) {
 
   return (
     <>
-      <div className="">
-        <div className="container my-12 lg:my-24 grid gap-12">
-          <div>
-            <div className="pb-6 grid gap-6 mb-6 border-b border-gray-100">
-              <div className="max-w-3xl flex flex-col gap-6">
-                <h1 className="text-4xl text-gray-900 sm:text-5xl lg:text-7xl">{post.title}</h1>
-              </div>
-              <div className="max-w-3xl flex gap-4 items-center">
-                {post.author && post.author.firstName && post.author.lastName && (
-                  <Avatar person={post.author} date={post.date} />
-                )}
-              </div>
+      <section className="pt-28 md:pt-36 pb-section-md">
+        <Container size="default">
+          <Eyebrow tone="primary">Post</Eyebrow>
+          <h1 className="mt-4 font-[var(--font-heading,inherit)] text-4xl sm:text-5xl lg:text-7xl leading-[1.05] tracking-tight">
+            {post.title}
+          </h1>
+          {post.author && post.author.firstName && post.author.lastName && (
+            <div className="mt-6">
+              <Avatar person={post.author} date={post.date} />
             </div>
-            <article className="gap-6 grid max-w-4xl">
-              <div className="">
-                {post?.coverImage && (
-                  <Image
-                    id={post.coverImage.asset?._ref || ''}
-                    alt={post.coverImage.alt || ''}
-                    className="rounded-sm w-full"
-                    width={1024}
-                    height={538}
-                    mode="cover"
-                    hotspot={post.coverImage.hotspot}
-                    crop={post.coverImage.crop}
-                  />
-                )}
-              </div>
-              {post.content?.length && (
-                <PortableText
-                  className="max-w-2xl prose-headings:font-medium prose-headings:tracking-tight"
-                  value={post.content as PortableTextBlock[]}
-                />
-              )}
-            </article>
-          </div>
-        </div>
-      </div>
-      <div className="border-t border-gray-100 bg-gray-50">
-        <div className="container py-12 lg:py-24 grid gap-12">
-          <aside>
-            <Suspense>{await MorePosts({skip: post._id, limit: 2})}</Suspense>
-          </aside>
-        </div>
-      </div>
+          )}
+        </Container>
+      </section>
+
+      <section className="pb-section-md">
+        <Container size="default">
+          <article className="grid gap-10">
+            {post?.coverImage && (
+              <Image
+                id={post.coverImage.asset?._ref || ''}
+                alt={post.coverImage.alt || ''}
+                className="rounded-2xl w-full"
+                width={1280}
+                height={720}
+                mode="cover"
+                hotspot={post.coverImage.hotspot}
+                crop={post.coverImage.crop}
+              />
+            )}
+            {post.content?.length && (
+              <PortableText
+                className="prose prose-lg prose-stone max-w-none prose-headings:font-[var(--font-heading,inherit)] prose-headings:tracking-tight prose-p:text-ink/80"
+                value={post.content as PortableTextBlock[]}
+              />
+            )}
+          </article>
+        </Container>
+      </section>
+
+      <DonateCallout
+        donateUrl={settings?.donateUrl}
+        donateText={settings?.donateButtonText}
+      />
+
+      <section className="bg-surface border-t border-gray-100 py-section-md">
+        <Container size="wide">
+          <Suspense>{await MorePosts({skip: post._id, limit: 2})}</Suspense>
+        </Container>
+      </section>
     </>
   )
 }

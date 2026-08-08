@@ -2,6 +2,12 @@ import React from 'react'
 
 import Cta from '@/app/components/Cta'
 import Info from '@/app/components/InfoSection'
+import ProgramGridBlock from '@/app/components/blocks/ProgramGridBlock'
+import ImpactMetricsRowBlock from '@/app/components/blocks/ImpactMetricsRowBlock'
+import StoryCarouselBlock from '@/app/components/blocks/StoryCarouselBlock'
+import PartnerLogosBlock from '@/app/components/blocks/PartnerLogosBlock'
+import TestimonialBlock from '@/app/components/blocks/TestimonialBlock'
+import DonateBannerBlock from '@/app/components/blocks/DonateBannerBlock'
 import {dataAttr} from '@/sanity/lib/utils'
 import {PageBuilderSection} from '@/sanity/lib/types'
 
@@ -12,21 +18,22 @@ type BlockProps = {
   pageType: string
 }
 
-type BlocksType = {
-  [key: string]: React.FC<BlockProps>
-}
-
-const Blocks = {
+// Blocks accept varying prop shapes; we look up by `_type` at runtime.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Blocks: Record<string, React.FC<any>> = {
   callToAction: Cta,
   infoSection: Info,
-} as BlocksType
+  programGrid: ProgramGridBlock,
+  impactMetricsRow: ImpactMetricsRowBlock,
+  storyCarousel: StoryCarouselBlock,
+  partnerLogos: PartnerLogosBlock,
+  testimonialBlock: TestimonialBlock,
+  donateBanner: DonateBannerBlock,
+}
 
-/**
- * Used by the <PageBuilder>, this component renders a the component that matches the block type.
- */
 export default function BlockRenderer({block, index, pageId, pageType}: BlockProps) {
-  // Block does exist
-  if (typeof Blocks[block._type] !== 'undefined') {
+  const Component = Blocks[block._type]
+  if (Component) {
     return (
       <div
         key={block._key}
@@ -36,23 +43,13 @@ export default function BlockRenderer({block, index, pageId, pageType}: BlockPro
           path: `pageBuilder[_key=="${block._key}"]`,
         }).toString()}
       >
-        {React.createElement(Blocks[block._type], {
-          key: block._key,
-          block: block,
-          index: index,
-          pageId: pageId,
-          pageType: pageType,
-        })}
+        <Component block={block} index={index} pageId={pageId} pageType={pageType} />
       </div>
     )
   }
-  // Block doesn't exist yet
-  return React.createElement(
-    () => (
-      <div className="w-full bg-gray-100 text-center text-gray-500 p-20 rounded">
-        A &ldquo;{block._type}&rdquo; block hasn&apos;t been created
-      </div>
-    ),
-    {key: block._key},
+  return (
+    <div className="w-full bg-gray-100 text-center text-gray-500 p-20 rounded">
+      A &ldquo;{block._type}&rdquo; block hasn&apos;t been created
+    </div>
   )
 }
